@@ -8,7 +8,7 @@ AAuraCharacterBase::AAuraCharacterBase()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	Weapon->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
+	Weapon->SetupAttachment(GetMesh(),FName(" "));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
