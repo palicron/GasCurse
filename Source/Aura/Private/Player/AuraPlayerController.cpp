@@ -6,10 +6,18 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
+#include "Interaction/IEnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
 	bReplicates = true;
+}
+
+void AAuraPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	CursorTrace();
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -58,5 +66,36 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControllerPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControllerPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit;
+
+	GetHitResultUnderCursor(ECC_Pawn, false, CursorHit);
+	if (!CursorHit.bBlockingHit)
+		return;
+
+	LastActor = ThisActor;
+	ThisActor = Cast<IIEnemyInterface>(CursorHit.GetActor());
+	
+	if (LastActor == nullptr)
+	{
+		if (ThisActor != nullptr)
+		{
+			ThisActor->HighlightActor();
+		}
+		return;
+	}
+	if (ThisActor == nullptr)
+	{
+		LastActor->UnHighLightActor();
+		return;
+	}
+	if (LastActor != ThisActor)
+	{
+		ThisActor->HighlightActor();
+		LastActor->UnHighLightActor();
 	}
 }
