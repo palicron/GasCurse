@@ -3,16 +3,35 @@
 
 #include "Character/AuraEnemy.h"
 
+#include "Aura/Aura.h"
+
+
+AAuraEnemy::AAuraEnemy()
+{
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+}
+
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 void AAuraEnemy::HighlightActor()
 {
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
-			FString::Printf(TEXT("HightLight Actor :  %s"), *GetName()));
+	if (IsValid(GetMesh()) && IsValid(Weapon))
+	{
+		GetMesh()->SetRenderCustomDepth(true);
+		Weapon->SetRenderCustomDepth(true);
+	}
 }
 
 void AAuraEnemy::UnHighLightActor()
 {
-	if(GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
-			FString::Printf(TEXT("UnHightLight Actor :  %s"), *GetName()));
+	if (IsValid(GetMesh()) && IsValid(Weapon))
+	{
+		GetMesh()->SetRenderCustomDepth(false);
+		Weapon->SetRenderCustomDepth(false);
+	}
 }
