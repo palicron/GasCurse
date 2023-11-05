@@ -27,4 +27,10 @@ protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera")
 	TObjectPtr<UCameraComponent> PlayerCamera;
+
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void OnRep_PlayerState() override;
+
+	void InitAbilityActorInfo();
 };
