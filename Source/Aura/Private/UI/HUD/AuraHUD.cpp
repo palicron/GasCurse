@@ -24,9 +24,14 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	checkf(OverLayWidgetClass, TEXT("OverLayy widget class Unitialized, pleas fill out BP_AuraHUD"));
 	checkf(OverlayWidgetControllerClass,
 	       TEXT("OverLayy widget Controller class Unitialized, pleas fill out BP_AuraHUD"));
+
 	UAuraUserWidget* Widget = CreateWidget<UAuraUserWidget>(GetWorld(), OverLayWidgetClass);
 	OverLayWidget = Cast<UAuraUserWidget>(Widget);
+
 	const FWidgetControllerParams WidgetControllerParams(PC, PS, Asc, As);
-	OverlayWidgetController = GetOverlayWidgetController(WidgetControllerParams);
+	UOverlayWidgetController* WidgetController = GetOverlayWidgetController(WidgetControllerParams);
+	
+	OverLayWidget->SetWidgetController(WidgetController);
+	WidgetController->BroadcastInitialValues();
 	Widget->AddToViewport();
 }
