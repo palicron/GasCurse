@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Applied Effects")
 	TSubclassOf<UGameplayEffect> InstantGamePlayEffectClass;
 
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Applied Effects")
+	TSubclassOf<UGameplayEffect> DurationGamePlayEffectClass;
+
 	UFUNCTION(BlueprintCallable)
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GamePlayEffectClass);
 	
