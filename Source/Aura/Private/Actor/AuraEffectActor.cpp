@@ -34,8 +34,16 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	check(GamePlayEffectClass);
 	FGameplayEffectContextHandle ContextHandel = TargetAsc->MakeEffectContext();
 	ContextHandel.AddSourceObject(this);
-	FGameplayEffectSpecHandle EffectSpecHandel = TargetAsc->MakeOutgoingSpec(GamePlayEffectClass, 1.f, ContextHandel);
-	TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandel.Data.Get());
+	const FGameplayEffectSpecHandle EffectSpecHandel = TargetAsc->MakeOutgoingSpec(GamePlayEffectClass, 1.f, ContextHandel);
+	FActiveGameplayEffectHandle ActiveEffectHandle =  TargetAsc->ApplyGameplayEffectSpecToSelf(*EffectSpecHandel.Data.Get());
+
+	const bool bIsInfinite = EffectSpecHandel.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
+
+	if(bIsInfinite && InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemovalOnEndOverlap)
+	{
+		ActiveEffectHandles.Add(TargetAsc, ActiveEffectHandle);
+	}
+	
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
@@ -49,6 +57,10 @@ void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 	{
 		ApplyEffectToTarget(TargetActor,DurationGamePlayEffectClass);
 		return;
+	}
+	if(InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+	{
+		ApplyEffectToTarget(TargetActor,InfiniteGamePlayEffectClass);
 	}
 	
 }
@@ -64,6 +76,22 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 	{
 		ApplyEffectToTarget(TargetActor,DurationGamePlayEffectClass);
 		return;
+	}
+	if(InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	{
+		ApplyEffectToTarget(TargetActor,InfiniteGamePlayEffectClass);
+		return;
+	}
+	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemovalOnEndOverlap)
+	{
+		UAbilitySystemComponent* TargetAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+		if (!IsValid(TargetAsc) || !ActiveEffectHandles.Contains(TargetAsc))
+		{
+			return;
+		}
+
+		TargetAsc->RemoveActiveGameplayEffect(ActiveEffectHandles[TargetAsc], 1);
+		ActiveEffectHandles.FindAndRemoveChecked(TargetAsc);
 	}
 }
 

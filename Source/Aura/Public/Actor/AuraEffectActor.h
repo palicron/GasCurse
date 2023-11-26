@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
+class UAbilitySystemComponent;
 class UGameplayEffect;
 
 UENUM(BlueprintType)
@@ -33,6 +35,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	TMap<UAbilitySystemComponent*, FActiveGameplayEffectHandle> ActiveEffectHandles;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Applied Effects")
 	bool bDestroyOnEffectRemoval = false;
