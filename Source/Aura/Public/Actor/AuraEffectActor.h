@@ -34,6 +34,7 @@ public:
 	AAuraEffectActor();
 
 protected:
+	
 	virtual void BeginPlay() override;
 
 	TMap<UAbilitySystemComponent*, FActiveGameplayEffectHandle> ActiveEffectHandles;
@@ -70,4 +71,7 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Applied Effects")
+	float ActorLevel = 1.f;
 };
