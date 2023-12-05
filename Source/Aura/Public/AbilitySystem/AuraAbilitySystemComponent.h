@@ -1,7 +1,9 @@
 // CAS Tutorial JsPalacios
 
 #pragma once
+#include "GameplayTagContainer.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAsseTagSignature, const FGameplayTagContainer& /* AssetTags*/)
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
@@ -17,6 +19,8 @@ class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 public:
 
 	void AbilityActorInfoSet();
+
+	FEffectAsseTagSignature EffectAssetTagsDelegate;
 	
 protected:
 
