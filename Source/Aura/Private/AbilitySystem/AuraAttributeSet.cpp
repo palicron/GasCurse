@@ -49,23 +49,7 @@ void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-
-	if(Attribute  == GetHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
-	}
-	if(Attribute  == GetMaxHealthAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,99999.f);
-	}
-	if(Attribute  == GetManaAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
-	}
-	if(Attribute  == GetMaxManaAttribute())
-	{
-		NewValue = FMath::Clamp(NewValue,0.f,99999.f);
-	}
+	
 }
 
 void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -74,6 +58,25 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	FEffectProperties Props;
 	SetEffectProperties(Data,Props);
+
+
+	
+	if(Data.EvaluatedData.Attribute  == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(),0.f,GetMaxHealth()));
+	}
+	if(Data.EvaluatedData.Attribute  == GetMaxHealthAttribute())
+	{
+		SetMaxHealth( FMath::Clamp(GetMaxHealth(),0.f,99999.f));
+	}
+	if(Data.EvaluatedData.Attribute  == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(),0.f,GetMaxMana()));
+	}
+	if(Data.EvaluatedData.Attribute  == GetMaxManaAttribute())
+	{
+		SetMaxMana(FMath::Clamp(GetMaxMana(),0.f,99999.f));
+	}
 
 }
 
