@@ -51,7 +51,9 @@ public:
 	UAuraAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+//----------------------------------------------------------------------------------------------------------------------
 	
+	/**Vital Attributes*/
 	UPROPERTY(ReplicatedUsing = OnRep_Health, EditAnywhere,BlueprintReadWrite,Category="Attribute Health")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Health)
@@ -76,6 +78,33 @@ public:
 	UFUNCTION()
 	virtual void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 
+	/*Primary Attributes**/
+
+	UPROPERTY(ReplicatedUsing = OnRep_Strength, EditAnywhere,BlueprintReadWrite,Category="Primary Attribute")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Strength)
+	UFUNCTION()
+	virtual void OnRep_Strength(const FGameplayAttributeData& OldStrength);
+
+	UPROPERTY(ReplicatedUsing = OnRep_Intelligence, EditAnywhere,BlueprintReadWrite,Category="Primary Attribute")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Intelligence)
+	UFUNCTION()
+	virtual void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence);
+
+	UPROPERTY(ReplicatedUsing = OnRep_Resilience, EditAnywhere,BlueprintReadWrite,Category="Primary Attribute")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Resilience)
+	UFUNCTION()
+	virtual void OnRep_Resilience(const FGameplayAttributeData& OldResilience);
+
+	UPROPERTY(ReplicatedUsing = OnRep_Vigor, EditAnywhere,BlueprintReadWrite,Category="Primary Attribute")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Vigor)
+	UFUNCTION()
+	virtual void OnRep_Vigor(const FGameplayAttributeData& OldVigor);
+	
+//----------------------------------------------------------------------------------------------------------------------
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
