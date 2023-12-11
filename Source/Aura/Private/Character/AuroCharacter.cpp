@@ -64,6 +64,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 
 	if(HasAuthority())
 	{
-		InitializePrimaryAttributes();
+		InitializeDefaultAttributes();
 	}
 }
