@@ -20,6 +20,12 @@ public:
 
 	AAuraCharacter();
 
+	/*Combat Interface*/
+
+	virtual int32 GetPlayerLevel() const override;
+	
+	/*End Combat Interface*/
+
 protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera")
