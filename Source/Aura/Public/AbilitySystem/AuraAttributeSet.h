@@ -13,6 +13,9 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+template<class T>
+using TAttributeFuncPtr = T(*)();
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -51,6 +54,10 @@ public:
 	UAuraAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	// in the curse the to this TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy>::FFuncPtr FunctionPointer;
+	TMap<FGameplayTag,TAttributeFuncPtr<FGameplayAttribute>> TagsToAttribute;
+	
 //----------------------------------------------------------------------------------------------------------------------
 	
 	/**Vital Attributes*/

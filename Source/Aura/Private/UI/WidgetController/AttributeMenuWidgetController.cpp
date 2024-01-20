@@ -6,15 +6,19 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "AuraGamePlayTags.h"
+
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
 
 	check(AttributeInfo);
 
-	FAuraAttributeInfo info = AttributeInfo->FindAttributeInfoForTag(FAuraGamePlayTags::Get().Attributes_Primary_Strength);
-	info.AttributeValue = AS->GetStrength();
-	AttributeInfoDelegate.Broadcast(info);
+	for (auto& Pair : AS->TagsToAttribute)
+	{
+		FAuraAttributeInfo info =  AttributeInfo->FindAttributeInfoForTag(Pair.Key);
+		info.AttributeValue = Pair.Value().GetNumericValue(AS);
+		AttributeInfoDelegate.Broadcast(info);
+	}
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
