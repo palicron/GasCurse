@@ -50,4 +50,22 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Attributes_Secondary_ManaRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.ManaRegeneration"), FString("ManaRegeneration"));
+
+	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.LMB"), FString("Input tag  fot left mouse button"));
+
+	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.RMB"), FString("Input tag  fot Right mouse button"));
+
+	GameplayTags.InputTag_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.1"), FString("Input tag  fot 1 button"));
+
+	GameplayTags.InputTag_2 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.2"), FString("Input tag  fot 2 button"));
+
+	GameplayTags.InputTag_3 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.3"), FString("Input tag  fot 3 button"));
+	
+	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Input.4"), FString("Input tag  fot 4 button"));
 }
