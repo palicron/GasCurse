@@ -78,4 +78,6 @@ private:
 	TObjectPtr<USplineComponent> Spline;
 
 	bool bTargeting = false;
+
+	void AutoRun();
 };
