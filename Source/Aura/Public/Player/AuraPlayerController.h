@@ -17,7 +17,7 @@ struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
 class IIEnemyInterface;
-
+class USplineComponent;
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController
 {
@@ -35,6 +35,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ShortPressThreshold = 0.5f;
 
 private:
 
@@ -61,4 +64,18 @@ private:
 	TObjectPtr<UAuraInputConfig> InputConfig;
 
 	UAuraAbilitySystemComponent* GetASC();
+
+	FVector CachedDestination = FVector::ZeroVector;
+
+	float FollowTime = 0.f;
+
+	bool bAutoRunning = false;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
+
+	bool bTargeting = false;
 };
