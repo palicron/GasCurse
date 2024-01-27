@@ -50,7 +50,9 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
-
+	
+	FHitResult CursorHit;
+	
 	IIEnemyInterface* LastActor;
 	IIEnemyInterface* ThisActor;
 
@@ -80,4 +82,6 @@ private:
 	bool bTargeting = false;
 
 	void AutoRun();
+
+
 };
