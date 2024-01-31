@@ -7,7 +7,7 @@
 #include "TargetDataUnderMouse.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSiganture, const FVector& , Data);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMouseTargetDataSiganture, const FGameplayAbilityTargetDataHandle& , DataHandel);
 /**
  * 
  */
@@ -28,4 +28,6 @@ public:
 private:
 
 	virtual void Activate() override;
+	
+	void SendMouseCursorData();
 };
