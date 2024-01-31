@@ -19,16 +19,22 @@ void UTargetDataUnderMouse::Activate()
 	}
 	else
 	{
-		//TODO: ON Server liset to info
+		const FGameplayAbilitySpecHandle SpecHandle = GetAbilitySpecHandle();
+		const FPredictionKey ActivationPredictionKey = GetActivationPredictionKey();
+		AbilitySystemComponent.Get()->AbilityTargetDataSetDelegate(SpecHandle, ActivationPredictionKey)
+		                      .AddUObject(this, &UTargetDataUnderMouse::OnTargetDataReplicatedCallback);
+		const bool bCalledDelegate = AbilitySystemComponent.Get()->CallReplicatedTargetDataDelegatesIfSet(SpecHandle, ActivationPredictionKey);
+		if(!bCalledDelegate)
+		{
+			SetWaitingOnRemotePlayerData();
+		}
 	}
-
 }
 
 void UTargetDataUnderMouse::SendMouseCursorData()
 {
-
 	FScopedPredictionWindow ScopedPredictionWindow(AbilitySystemComponent.Get());
-	
+
 	FHitResult CursorHit;
 	if (APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get())
 	{
@@ -43,8 +49,18 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 	                                                      DataHandel, FGameplayTag(),
 	                                                      AbilitySystemComponent->ScopedPredictionKey);
 
-	if(ShouldBroadcastAbilityTaskDelegates())
+	if (ShouldBroadcastAbilityTaskDelegates())
 	{
 		ValidData.Broadcast(DataHandel);
+	}
+}
+
+void UTargetDataUnderMouse::OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle,
+                                                           FGameplayTag ActivationTag)
+{
+	AbilitySystemComponent->ConsumeClientReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey());
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
 	}
 }
