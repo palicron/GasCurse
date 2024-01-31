@@ -7,29 +7,33 @@
 #include "Interaction/CombatInterface.h"
 
 
-void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                           const FGameplayAbilityActorInfo* ActorInfo,
                                            const FGameplayAbilityActivationInfo ActivationInfo,
                                            const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+}
 
-	if(HasAuthority(&ActivationInfo))
+void UAuraProjectileSpell::SpawnProjectile() const
+{
+	if(GetAvatarActorFromActorInfo()->HasAuthority())
 	{
-		if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
+		if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 		{
 			const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 			FTransform SpawnTransform;
 			//Todo: Set De Projectile location
 			SpawnTransform.SetLocation(SocketLocation);
-			AAuraProjectile* Projectile =  GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform,
-															GetOwningActorFromActorInfo(),
-															Cast<APawn>(GetOwningActorFromActorInfo()),
-															ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+			AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass, SpawnTransform,
+				GetOwningActorFromActorInfo(),
+				Cast<APawn>(GetOwningActorFromActorInfo()),
+				ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 			//TODO: Give the Projectile A Gameplay effect for causing Damage 
 
 			Projectile->FinishSpawning(SpawnTransform);
 		}
-		
 	}
 }
