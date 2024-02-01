@@ -18,6 +18,7 @@ class UInputMappingContext;
 class UInputAction;
 class IIEnemyInterface;
 class USplineComponent;
+
 UCLASS()
 class AURA_API AAuraPlayerController : public APlayerController
 {
@@ -36,23 +37,30 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
 	UPROPERTY(EditDefaultsOnly)
 	float ShortPressThreshold = 0.5f;
 
-private:
 
+	void ShiftPressed() { bShiftKeyDown = true; };
+	void ShiftReleased() { bShiftKeyDown = false; };
+	bool bShiftKeyDown = false;
+
+private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
-		
+
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
 
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
-	
+
 	FHitResult CursorHit;
-	
+
 	IIEnemyInterface* LastActor;
 	IIEnemyInterface* ThisActor;
 
@@ -82,6 +90,4 @@ private:
 	bool bTargeting = false;
 
 	void AutoRun();
-
-
 };
