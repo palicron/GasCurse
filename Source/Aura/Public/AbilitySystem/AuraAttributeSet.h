@@ -73,6 +73,14 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
 
+	/*
+	 * Meta Attributes
+	 */
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attribute")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,IncomingDamage)
+	
 	/*Primary Attributes**/
 
 	UPROPERTY(ReplicatedUsing = OnRep_Strength, EditAnywhere,BlueprintReadWrite,Category="Primary Attribute")
