@@ -70,6 +70,12 @@ int32 AAuraEnemy::GetPlayerLevel() const
 	return Level;
 }
 
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 void AAuraEnemy::HighlightActor()
 {
 	if (IsValid(GetMesh()) && IsValid(Weapon))
