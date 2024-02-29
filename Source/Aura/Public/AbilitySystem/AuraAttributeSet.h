@@ -169,11 +169,10 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ManaRegeneration)
 	UFUNCTION()
 	virtual void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration);
-
 	
-		
-//----------------------------------------------------------------------------------------------------------------------
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
+	void ShowFloatingText(FEffectProperties Props, float LocalIncomingDamage);
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 

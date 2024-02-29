@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UDamageTextComponent;
 class UAuraAbilitySystemComponent;
 struct FGameplayTag;
 class UAuraInputConfig;
@@ -29,7 +30,11 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	UFUNCTION(Client,Unreliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	
 protected:
+	
 	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
@@ -42,12 +47,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	float ShortPressThreshold = 0.5f;
-
-
+	
 	void ShiftPressed() { bShiftKeyDown = true; };
 	void ShiftReleased() { bShiftKeyDown = false; };
 	bool bShiftKeyDown = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageComponent;
+	
 private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
@@ -90,4 +97,6 @@ private:
 	bool bTargeting = false;
 
 	void AutoRun();
+
+
 };
