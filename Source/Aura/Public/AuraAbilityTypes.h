@@ -15,7 +15,20 @@ public:
 
 	void SetIsCriticalHit(const bool bInCriticalHit) { bIsCriticalHit = bInCriticalHit; }
 	void SetIsBlockHit(const bool bInIsBlockHit) { bIsCriticalHit = bInIsBlockHit; }
-protected:
+
+	/** Creates a copy of this context, used to duplicate for later modifications */
+	virtual FAuraGameplayEffectContext* Duplicate() const
+	{
+		FAuraGameplayEffectContext* NewContext = new FAuraGameplayEffectContext();
+		*NewContext = *this;
+		if (GetHitResult())
+		{
+			// Does a deep copy of the hit result
+			NewContext->AddHitResult(*GetHitResult(), true);
+		}
+		return NewContext;
+	}
+
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
 	{
@@ -24,6 +37,8 @@ protected:
 
 	/** Custom serialization, subclasses must override this */
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
+protected:
+	
 
 	UPROPERTY()
 	bool bIsBlockHit = false;
@@ -31,4 +46,14 @@ protected:
 	UPROPERTY()
 	bool bIsCriticalHit = false;
 	
+};
+
+template<>
+struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext>
+{
+	enum
+	{
+		WithCopy = true,		// Necessary so that TSharedPtr<FGameplayEffectContext> Data is copied around
+		WithNetSerializer = true,
+	};
 };
