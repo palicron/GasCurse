@@ -5,7 +5,10 @@
 
 #include "AbilitySystemComponent.h"
 #include "AuraGamePlayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Interaction/CombatInterface.h"
 
 struct AuraDamageStatics
 {
@@ -43,6 +46,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 
+	const ICombatInterface* SourceCombatI = Cast<ICombatInterface>(SourceAvatar);
+	const ICombatInterface* TargetCombatI = Cast<ICombatInterface>(TargetAvatar);
+	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -56,7 +62,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	float Damage = Spec.GetSetByCallerMagnitude(FAuraGamePlayTags::Get().Damage);
 
 	//Capture BlockChange on Taget, and determine if there was a succesful Block
-
 	
 	float TargetBlockChance = 0.f;
 
@@ -75,10 +80,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const bool bBlocked = FMath::RandRange(1,100) < TargetBlockChance;
 	Damage = bBlocked ? Damage * 0.5f : Damage;
 
-	//ArmorPenetration Ignore a percetage of targets armor
+	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
+	const FRealCurve* ArmorPenetrationCurve =  CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"),FString());
+	const float ArmorPenCoefficient = ArmorPenetrationCurve->Eval(SourceCombatI->GetPlayerLevel());
 
-	const float EffectiveArmor = TargetArmor *= (100.f - SourceArmorPenetration * 0.25f) / 100.f;
-	Damage *= (100 - EffectiveArmor * 0.25f) / 100;
+	
+	const FRealCurve* EffectiveArmorCurve =  CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"),FString());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatI->GetPlayerLevel());
+	
+	//ArmorPenetration Ignore a percetage of targets armor
+	const float EffectiveArmor = TargetArmor *= (100.f - SourceArmorPenetration * ArmorPenCoefficient) / 100.f;
+	Damage *= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100;
 	
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(),EGameplayModOp::Additive,Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);

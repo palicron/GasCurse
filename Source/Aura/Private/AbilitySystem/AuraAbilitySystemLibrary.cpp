@@ -49,9 +49,9 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WordC
 {
 	if(const AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WordContextObject)))
 	{
-		AActor* AvatarActor = ASC->GetAvatarActor();
+		const AActor* AvatarActor = ASC->GetAvatarActor();
 		
-		const UCharacterClassInfo* CharacterClassInfo = AuraGM->CharacterClassInfo;
+		const UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WordContextObject);
 		const FCharacterClassDefaultInfo ClassDefInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
 
 		FGameplayEffectContextHandle PrimaryContextsHandel = ASC->MakeEffectContext();
@@ -76,7 +76,7 @@ void UAuraAbilitySystemLibrary::GiveStartUpAbilities(const UObject* WordContextO
 {
 	if(const AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WordContextObject)))
 	{
-		const UCharacterClassInfo* CharacterClassInfo = AuraGM->CharacterClassInfo;
+		const UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WordContextObject);
 		
 		for(const TSubclassOf<UGameplayAbility> AbilityClass : CharacterClassInfo->CommonAbilities)
 		{
@@ -84,4 +84,14 @@ void UAuraAbilitySystemLibrary::GiveStartUpAbilities(const UObject* WordContextO
 			ASC->GiveAbility(AbilitySpec);
 		}
 	}
+}
+
+UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WordContextObject)
+{
+	if (const AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WordContextObject)))
+	{
+		return AuraGM->CharacterClassInfo;
+	}
+
+	return nullptr;
 }
