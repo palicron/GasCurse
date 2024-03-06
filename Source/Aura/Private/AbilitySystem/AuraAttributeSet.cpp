@@ -152,7 +152,7 @@ void UAuraAttributeSet::ShowFloatingText(FEffectProperties Props, const float Lo
 	{
 		if(AAuraPlayerController* AuraCtr = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter,0)))
 		{
-			AuraCtr->ShowDamageNumber(LocalIncomingDamage,Props.TargetCharacter);
+			AuraCtr->ShowDamageNumber(LocalIncomingDamage,Props.TargetCharacter,bBlockedHit,bCriticalHit);
 		}
 	}
 }

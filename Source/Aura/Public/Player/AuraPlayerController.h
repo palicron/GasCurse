@@ -30,8 +30,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	UFUNCTION(Client,Unreliable)
-	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	UFUNCTION(Client, Unreliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
 	
 protected:
 	
