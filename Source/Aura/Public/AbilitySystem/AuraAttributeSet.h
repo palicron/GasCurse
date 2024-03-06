@@ -172,7 +172,7 @@ public:
 	
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
-	void ShowFloatingText(FEffectProperties Props, float LocalIncomingDamage);
+	void ShowFloatingText(FEffectProperties Props, float LocalIncomingDamage, bool bBlockedHit, bool bCriticalHit) const;
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
