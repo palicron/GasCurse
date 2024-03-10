@@ -14,7 +14,7 @@ public:
 	bool IsBlockHit() const {return bIsBlockHit;}
 
 	void SetIsCriticalHit(const bool bInCriticalHit) { bIsCriticalHit = bInCriticalHit; }
-	void SetIsBlockHit(const bool bInIsBlockHit) { bIsCriticalHit = bInIsBlockHit; }
+	void SetIsBlockHit(const bool bInIsBlockHit) { bIsBlockHit = bInIsBlockHit; }
 
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
