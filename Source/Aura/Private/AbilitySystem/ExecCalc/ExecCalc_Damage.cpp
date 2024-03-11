@@ -71,9 +71,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	// Get Damage Set By Collar Magnitude
 	float Damage = 0.f;
-	for (FGameplayTag DamageTag : FAuraGamePlayTags::Get().DamageType)
+	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGamePlayTags::Get().DamageTypeToResistances)
 	{
-		Damage += Spec.GetSetByCallerMagnitude(DamageTag);
+		Damage += Spec.GetSetByCallerMagnitude(Pair.Key);
 	}
 
 	//Capture BlockChange on Taget, and determine if there was a succesful Block
