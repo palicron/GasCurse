@@ -169,6 +169,35 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ManaRegeneration)
 	UFUNCTION()
 	virtual void OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration);
+	/**
+	 * Resistance
+	 */
+
+	UPROPERTY(ReplicatedUsing = OnRep_FireResistance, EditAnywhere,BlueprintReadWrite,Category="Resistance")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,FireResistance)
+	UFUNCTION()
+	virtual void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance);
+
+	UPROPERTY(ReplicatedUsing = OnRep_LightningResistance, EditAnywhere,BlueprintReadWrite,Category="Resistance")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,LightningResistance)
+	UFUNCTION()
+	virtual void OnRep_LightningResistance(const FGameplayAttributeData& OldFLightningResistance);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_ArcaneResistance, EditAnywhere,BlueprintReadWrite,Category="Resistance")
+	FGameplayAttributeData ArcaneResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ArcaneResistance)
+	UFUNCTION()
+	virtual void OnRep_ArcaneResistance(const FGameplayAttributeData& OldFArcaneResistance);
+
+	UPROPERTY(ReplicatedUsing = OnRep_PhysicalResistance, EditAnywhere,BlueprintReadWrite,Category="Resistance")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,PhysicalResistance)
+	UFUNCTION()
+	virtual void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance);
+	
+
 	
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
