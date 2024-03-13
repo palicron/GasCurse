@@ -9,6 +9,9 @@
 #include "Aura/Aura.h"
 #include "Components/WidgetComponent.h"
 #include "AuraGamePlayTags.h"
+#include "AI/AuraAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 
@@ -100,6 +103,21 @@ void AAuraEnemy::InitAbilityActorInfo()
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 
 	InitializeDefaultAttributes();
+}
+
+void AAuraEnemy::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if(!HasAuthority())
+	{
+		return;
+	}
+	
+	AuraAIController = Cast<AAuraAIController>(NewController);
+
+	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	AuraAIController->RunBehaviorTree(BehaviorTree);
 }
 
 void AAuraEnemy::HitReactTagChange(const FGameplayTag CallBackTag, int32 NewCount)
