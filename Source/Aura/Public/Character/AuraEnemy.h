@@ -10,8 +10,8 @@
 #include "AuraEnemy.generated.h"
 
 class UWidgetComponent;
-
-
+class UBehaviorTree;
+class AAuraAIController;
 /**
  * 
  */
@@ -36,6 +36,8 @@ public:
 	virtual void UnHighLightActor() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 	UPROPERTY(BlueprintAssignable)	
 	FOnStatusChangedSignature OnHealthChanged;
@@ -66,6 +68,10 @@ protected:
 
 	virtual void InitializeDefaultAttributes() const override;
 
-	
+	UPROPERTY(EditAnywhere,Category="AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+	UPROPERTY()
+	TObjectPtr<AAuraAIController> AuraAIController;
 	
 };
