@@ -35,10 +35,17 @@ public:
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MultiCastHandleDeath();
 	
+	/**Combat Interface*/
+	virtual bool IsDead_Implementation() const override;
+	virtual AActor* GetAvatar_Implementation() override;
+	/**Combat Interface*/
+	
 protected:
 	
 	virtual void BeginPlay() override;
 
+	bool bDead = false;
+	
 	UPROPERTY(EditAnywhere, Category= "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
@@ -67,7 +74,7 @@ protected:
 	virtual void InitializeDefaultAttributes() const;
 
 	void AddCharacterAbilities();
-
+	
 	/*
 	 * Disolve Effect
 	 */

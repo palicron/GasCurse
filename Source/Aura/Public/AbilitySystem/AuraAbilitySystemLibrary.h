@@ -47,4 +47,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySytemLibrary|GameplayEffects")
 	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool bInIsCriticalHit);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySytemLibrary|GamePlayMechanics")
+	static void GetLifePlayerWithinRadius(const UObject* WordContextObject,TArray<AActor*>& OutOverLappingActors, const TArray<AActor*>& ActorsToIgnore,float Radius,const FVector& SphereOrigin);
 };
