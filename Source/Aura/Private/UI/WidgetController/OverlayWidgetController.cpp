@@ -54,7 +54,8 @@ void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data)
 
 void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
-	OnMaxHealthChangedDelegate.Broadcast(Data.NewValue);
+	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+	OnMaxHealthChangedDelegate.Broadcast(AuraAttributeSet->GetMaxHealth());
 }
 
 void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
@@ -64,5 +65,6 @@ void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) c
 
 void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
 {
-	OnMaxManaChangedDelegate.Broadcast(Data.NewValue);
+	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+	OnMaxManaChangedDelegate.Broadcast(AuraAttributeSet->GetMaxMana());
 }
