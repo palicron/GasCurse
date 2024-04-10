@@ -26,6 +26,9 @@ public:
 	
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TArray<FTaggedMontage> AttackMontage;
+
 	virtual FVector GetCombatSocketLocation_Implementation() override;
 
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
@@ -38,6 +41,7 @@ public:
 	/**Combat Interface*/
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
 	/**Combat Interface*/
 	
 protected:
