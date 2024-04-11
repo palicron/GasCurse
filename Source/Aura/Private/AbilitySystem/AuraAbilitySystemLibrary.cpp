@@ -159,3 +159,8 @@ void UAuraAbilitySystemLibrary::GetLifePlayerWithinRadius(const UObject* WordCon
 		}
 	}
 }
+
+bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondActor)
+{
+	return !FirstActor->ActorHasTag(FName("Player")) == SecondActor->ActorHasTag(FName("Player"));
+}
