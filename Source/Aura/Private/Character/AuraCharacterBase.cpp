@@ -133,6 +133,7 @@ TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
 	return AttackMontage;
 }
 
+
 void AAuraCharacterBase::MultiCastHandleDeath_Implementation()
 {
 	Weapon->SetSimulatePhysics(true);
@@ -150,5 +151,9 @@ void AAuraCharacterBase::MultiCastHandleDeath_Implementation()
 	bDead = true;
 }
 
+UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
+{
+	return BloodEffect;
+}
 
 
