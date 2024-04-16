@@ -8,6 +8,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 AAuraCharacterBase::AAuraCharacterBase()
 {
@@ -91,15 +92,15 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGamepl
 {
 	//@TODO Return correct sokcet base on montagetag
 	const FAuraGamePlayTags GameplayTags = FAuraGamePlayTags::Get();
-	if(MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_Weapon) && IsValid(Weapon))
+	if(MontageTag.MatchesTagExact(GameplayTags.CombatSocket_Weapon) && IsValid(Weapon))
 	{
 		return Weapon->GetSocketLocation(WeaponTipSocketName);
 	}
-	if(MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_LeftHand))
+	if(MontageTag.MatchesTagExact(GameplayTags.CombatSocket_LeftHand))
 	{
 		return GetMesh()->GetSocketLocation(LeftHandSocketName);
 	}
-	if(MontageTag.MatchesTagExact(GameplayTags.Montage_Attack_RightHand))
+	if(MontageTag.MatchesTagExact(GameplayTags.CombatSocket_RightHand))
 	{
 		return GetMesh()->GetSocketLocation(RightHandSocketName);
 	}
@@ -136,6 +137,12 @@ TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
 
 void AAuraCharacterBase::MultiCastHandleDeath_Implementation()
 {
+
+	if(DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,DeathSound,GetActorLocation(),GetActorRotation());
+	}
+
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
@@ -154,6 +161,18 @@ void AAuraCharacterBase::MultiCastHandleDeath_Implementation()
 UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
 {
 	return BloodEffect;
+}
+
+FTaggedMontage AAuraCharacterBase::GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTang)
+{
+	for (const FTaggedMontage& Montage : AttackMontage)
+	{
+		if(Montage.MontageTag.MatchesTagExact(MontageTang))
+		{
+			return Montage;
+		}
+	}
+	return FTaggedMontage();
 }
 
 

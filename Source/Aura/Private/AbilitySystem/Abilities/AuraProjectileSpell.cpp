@@ -21,7 +21,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetLocati
 {
 	if (GetAvatarActorFromActorInfo()->HasAuthority())
 	{
-		const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(),FAuraGamePlayTags::Get().Montage_Attack_Weapon);
+		const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(),FAuraGamePlayTags::Get().CombatSocket_Weapon);
 		FTransform SpawnTransform;
 
 		SpawnTransform.SetLocation(SocketLocation);
