@@ -158,4 +158,7 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	GameplayTags.Montage_Attack_5 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Montage.Attack.5"), FString("Attack 5"));
 
+	
+	GameplayTags.Abilities_Summon= UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Summon"), FString("Summon"));
 }
