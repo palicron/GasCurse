@@ -8,6 +8,7 @@
 #include "OverlayWidgetController.generated.h"
 
 
+class UAbilityInfo;
 class UAuraUserWidget;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStatusChangedSignature, float, NewSatus);
 
@@ -65,6 +66,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 	
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
 	
