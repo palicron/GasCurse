@@ -29,22 +29,32 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddUObject(
 	this, &UOverlayWidgetController::MaxManaChanged);
 
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTagsDelegate.AddLambda(
-		[this](const FGameplayTagContainer& AssetTags)
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven)
 		{
-			for (const FGameplayTag& Tag : AssetTags)
+			OnInitilizeStarupAbilities(AuraASC);
+		}
+		else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitilizeStarupAbilities);
+		}
+		AuraASC->EffectAssetTagsDelegate.AddLambda(
+			[this](const FGameplayTagContainer& AssetTags)
 			{
-				FGameplayTag MessageTag =  FGameplayTag::RequestGameplayTag(FName("Message"));
-				if(Tag.MatchesTag(MessageTag))
+				for (const FGameplayTag& Tag : AssetTags)
 				{
-					const FUIWidgetRow* Row =  GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
-					if(Row)
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+					if (Tag.MatchesTag(MessageTag))
 					{
-						MessageWidgetRowDelegate.Broadcast(*Row);
+						if (const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag))
+						{
+							MessageWidgetRowDelegate.Broadcast(*Row);
+						}
 					}
 				}
-			}
-		});
+			});
+	}
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
@@ -67,4 +77,12 @@ void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data
 {
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 	OnMaxManaChangedDelegate.Broadcast(AuraAttributeSet->GetMaxMana());
+}
+
+void UOverlayWidgetController::OnInitilizeStarupAbilities(UAuraAbilitySystemComponent* AuraASC)
+{
+	if(!AuraASC && !AuraASC->bStartupAbilitiesGiven)
+	{
+		return;
+	}
 }

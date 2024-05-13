@@ -4,6 +4,7 @@
 #include "GameplayTagContainer.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAsseTagSignature, const FGameplayTagContainer& /* AssetTags*/)
+DECLARE_MULTICAST_DELEGATE_OneParam(FAbilitiesGiven, UAuraAbilitySystemComponent*);
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
@@ -22,11 +23,18 @@ public:
 
 	FEffectAsseTagSignature EffectAssetTagsDelegate;
 
+	FAbilitiesGiven AbilitiesGivenDelegate;
+
+	uint8 bStartupAbilitiesGiven : 1;
+ 
+
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>> StartupAbilities);
 
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
 
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+
+	
 	
 protected:
 
