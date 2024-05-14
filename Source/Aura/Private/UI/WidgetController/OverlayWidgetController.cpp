@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -85,4 +86,14 @@ void UOverlayWidgetController::OnInitilizeStarupAbilities(UAuraAbilitySystemComp
 	{
 		return;
 	}
+
+	FForEachAbility BroadCastDelegate;
+	BroadCastDelegate.BindLambda([&](const FGameplayAbilitySpec& AbilitySpec)
+	{
+		FAuraAbilityInfo Info =  AbilityInfo->FindAbilityInfoForTag(AuraASC->GetAbilityTagFromSpec(AbilitySpec));
+		Info.InputTag = AuraASC->GetInputTagFromSpec(AbilitySpec);
+		AbilityInfoDelegate.Broadcast(Info);
+	});
+
+	AuraASC->ForEachAbility(BroadCastDelegate);
 }
