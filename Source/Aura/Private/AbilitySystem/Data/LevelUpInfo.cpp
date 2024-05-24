@@ -3,7 +3,7 @@
 
 #include "AbilitySystem/Data/LevelUpInfo.h"
 
-int32 ULevelUpInfo::FindLevelForCp(int32 XP)
+int32 ULevelUpInfo::FindLevelForXp(int32 XP) const
 {
 	int32 level = 1;
 	bool bSearching = true;
