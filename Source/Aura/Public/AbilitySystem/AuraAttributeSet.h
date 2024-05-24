@@ -80,6 +80,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attribute")
 	FGameplayAttributeData IncomingDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,IncomingDamage)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attribute")
+	FGameplayAttributeData IncomingXP;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,IncomingXP)
 	
 	/*Primary Attributes**/
 
