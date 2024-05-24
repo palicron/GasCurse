@@ -63,9 +63,6 @@ public:
 protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Character Class Defaults")
-    ECharacterClass CharacterClass = ECharacterClass::Warrior;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Character Class Defaults")
 	int32 Level = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

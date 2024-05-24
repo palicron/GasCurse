@@ -164,3 +164,12 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstActor, AActor* SecondAc
 {
 	return !FirstActor->ActorHasTag(FName("Player")) == SecondActor->ActorHasTag(FName("Player"));
 }
+
+int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* WordContextObject, ECharacterClass CharacterClass, int32 CharacterLevel)
+{
+	const UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WordContextObject);
+	if(!CharacterClassInfo) return 0;
+
+	FCharacterClassDefaultInfo CharacterInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+	return static_cast<int32>(CharacterInfo.XPReward.GetValueAtLevel(CharacterLevel));
+}
