@@ -25,4 +25,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void AddToXP(int32 InXp);
+
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	void LevelUp();
 };

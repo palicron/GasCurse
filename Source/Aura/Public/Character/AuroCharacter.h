@@ -23,13 +23,15 @@ public:
 
 	/*Combat Interface*/
 
-	virtual int32 GetPlayerLevel() const override;
+	virtual int32 GetPlayerLevel_Implementation() const override;
 	
 	/*End Combat Interface*/
 
 	/*Player Interface*/
 
 	virtual void AddToXP_Implementation(int32 InXp) override;
+
+	virtual void LevelUp_Implementation() override;
 	/*End Player Interface*/
 
 protected:

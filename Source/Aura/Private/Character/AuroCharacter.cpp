@@ -33,7 +33,7 @@ AAuraCharacter::AAuraCharacter()
 	CharacterClass = ECharacterClass::Elementalist;
 }
 
-int32 AAuraCharacter::GetPlayerLevel() const
+int32 AAuraCharacter::GetPlayerLevel_Implementation() const
 {
 	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
@@ -45,6 +45,11 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXp)
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	AuraPlayerState->AddToXP(InXp);
+}
+
+void AAuraCharacter::LevelUp_Implementation()
+{
+
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)

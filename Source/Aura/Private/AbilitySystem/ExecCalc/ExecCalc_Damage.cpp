@@ -87,8 +87,19 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 
-	const ICombatInterface* SourceCombatI = Cast<ICombatInterface>(SourceAvatar);
-	const ICombatInterface* TargetCombatI = Cast<ICombatInterface>(TargetAvatar);
+	int32 SourcePlayerLevel = 1;
+	int32 TargetPlayerLevel = 1;
+	
+	if(SourceAvatar->Implements<UCombatInterface>())
+	{
+		SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
+	}
+	
+	if(TargetAvatar->Implements<UCombatInterface>())
+	{
+		TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
+	}
+
 	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 
@@ -139,11 +150,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
 	const FRealCurve* ArmorPenetrationCurve =  CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPenetration"),FString());
-	const float ArmorPenCoefficient = ArmorPenetrationCurve->Eval(SourceCombatI->GetPlayerLevel());
+	const float ArmorPenCoefficient = ArmorPenetrationCurve->Eval(SourcePlayerLevel);
 
 	
 	const FRealCurve* EffectiveArmorCurve =  CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"),FString());
-	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatI->GetPlayerLevel());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetPlayerLevel);
 
 	
 	//ArmorPenetration Ignore a percetage of targets armor
@@ -167,7 +178,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	TargetCriticalHitResistance = FMath::Max<float>(TargetCriticalHitResistance,0.f);
 
 	const FRealCurve* CtrHitResitanceCurve =  CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("CtrHitResitance"),FString());
-	const float CtrHitResitanceCoefficient = CtrHitResitanceCurve->Eval(TargetCombatI->GetPlayerLevel());
+	const float CtrHitResitanceCoefficient = CtrHitResitanceCurve->Eval(TargetPlayerLevel);
 
 	const float EffectiveCritHitChange = SourceCriticalHitChance - TargetCriticalHitResistance * CtrHitResitanceCoefficient;
 
