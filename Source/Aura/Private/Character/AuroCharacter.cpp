@@ -40,6 +40,13 @@ int32 AAuraCharacter::GetPlayerLevel() const
 	return AuraPlayerState->GetPlayerLevel();
 }
 
+void AAuraCharacter::AddToXP_Implementation(int32 InXp)
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->AddToXP(InXp);
+}
+
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
