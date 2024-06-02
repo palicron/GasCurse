@@ -12,6 +12,7 @@ struct FAuraAbilityInfo;
 class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 class UAuraUserWidget;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChangedSignature, int32, NewSatus);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStatusChangedSignature, float, NewSatus);
 
 
@@ -70,6 +71,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable,Category="GAS|XP")
 	FOnStatusChangedSignature OnXPPercentChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable,Category="GAS|Level")
+	FOnPlayerStatChangedSignature OnPlayerLevelChangeDelegate;
 	
 protected:
 

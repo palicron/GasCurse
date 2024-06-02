@@ -24,7 +24,10 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AAuraPlayerState* CurrePlayerstate = CastChecked<AAuraPlayerState>(PlayerState);
 	
 	CurrePlayerstate->OnXpChangeDelegate.AddUObject(this,&UOverlayWidgetController::OnXPChange);
-	
+	CurrePlayerstate->OnLevelChangeDelegate.AddLambda([&] (int32 LevelChange)
+	{
+		OnPlayerLevelChangeDelegate.Broadcast(LevelChange);
+	});
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 
 
