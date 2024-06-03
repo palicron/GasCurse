@@ -7,6 +7,7 @@
 #include "Interaction/PlayerInterface.h"
 #include "AuroCharacter.generated.h"
 
+class UNiagaraComponent;
 class UCameraComponent;
 class USpringArmComponent;
 /**
@@ -49,6 +50,9 @@ public:
 	
 	/*End Player Interface*/
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
 protected:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera")
@@ -62,4 +66,7 @@ protected:
 	virtual void OnRep_PlayerState() override;
 
 	virtual void InitAbilityActorInfo() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLevelUpParticles() const;
 };

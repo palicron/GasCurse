@@ -2,11 +2,13 @@
 
 
 #include "Character/AuroCharacter.h"
+#include "Character/AuroCharacter.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
+#include "NiagaraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/AuraPlayerController.h"
@@ -18,7 +20,8 @@ AAuraCharacter::AAuraCharacter()
 	ArmSpringCompoent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Arm"));
 	ArmSpringCompoent->SetupAttachment(RootComponent);
 	ArmSpringCompoent->TargetArmLength = 400.f;
-
+	ArmSpringCompoent->bDoCollisionTest = false;
+	
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	PlayerCamera->SetupAttachment(ArmSpringCompoent, USpringArmComponent::SocketName);
 
@@ -32,6 +35,10 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationYaw = false;
 
 	CharacterClass = ECharacterClass::Elementalist;
+
+	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>("Level Up Niagara Component");
+	LevelUpNiagaraComponent->SetupAttachment(GetRootComponent());
+	LevelUpNiagaraComponent->bAutoActivate = false;
 }
 
 int32 AAuraCharacter::GetPlayerLevel_Implementation() const
@@ -50,7 +57,20 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXp)
 
 void AAuraCharacter::LevelUp_Implementation()
 {
+	MulticastLevelUpParticles();
+}
 
+
+void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if(IsValid(LevelUpNiagaraComponent))
+	{
+		const FVector CameraLocation = PlayerCamera->GetComponentLocation();
+		const FVector NiagaraLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		const FRotator ToCameraRotation = (CameraLocation - NiagaraLocation).Rotation();
+		LevelUpNiagaraComponent->SetWorldRotation(ToCameraRotation);
+		LevelUpNiagaraComponent->Activate(true);
+	}
 }
 
 int32 AAuraCharacter::GetCurrentXP_Implementation() const
