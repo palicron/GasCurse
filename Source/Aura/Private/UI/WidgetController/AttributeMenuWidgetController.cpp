@@ -5,19 +5,22 @@
 
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
-#include "AuraGamePlayTags.h"
 #include "Player/AuraPlayerState.h"
 
 void UAttributeMenuWidgetController::BroadcastInitialValues()
 {
 	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-
+	
 	check(AttributeInfo);
 
 	for (auto& Pair : AS->TagsToAttribute)
 	{
 		BrodcastAttributeInfo(Pair.Key,Pair.Value());
 	}
+	AAuraPlayerState* CurrePlayerstate = CastChecked<AAuraPlayerState>(PlayerState);
+
+	AttributePointsChangedDelegate.Broadcast(CurrePlayerstate->GetAttributePoints());
+	SpellPointsChangedDelegate.Broadcast(CurrePlayerstate->GetSpellPoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
