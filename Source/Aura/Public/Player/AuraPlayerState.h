@@ -34,6 +34,10 @@ public:
 	FAuraOnStateChangeSignature OnXpChangeDelegate;
 
 	FAuraOnStateChangeSignature OnLevelChangeDelegate;
+
+	FAuraOnStateChangeSignature OnAttributePointChangeDelegate;
+
+	FAuraOnStateChangeSignature OnSpellPointChangeDelegate;
 	
 	int32 GetPlayerXP() const { return PlayerXP;}
 
@@ -47,6 +51,17 @@ public:
 	void SetLevel(const int32 Newlevel);
 
 	void AddToLevel(const int32 Newlevel);
+
+	void AddToAttributePoints(int32 InPoints);
+
+	void AddToSpellPoints(int32 InPoints);
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetAttributePoints() const {return AttributePoints;}
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetSpellPoints() const {return SpellPoints;}
+
 protected:
 	
 	UPROPERTY(VisibleAnywhere)
@@ -66,7 +81,19 @@ private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level)
 	int32 Level = 1;
 
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_AttributePoints)
+	int32 AttributePoints = 0;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_SpellPoints)
+	int32 SpellPoints = 1;
+
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+
+	UFUNCTION()
+	void OnRep_AttributePoints(int32 OldAttributesPoint);
+
+	UFUNCTION()
+	void OnRep_SpellPoints(int32 OldSpellPoints);
 	
 };
