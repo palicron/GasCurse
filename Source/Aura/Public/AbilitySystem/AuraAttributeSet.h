@@ -201,7 +201,7 @@ public:
 	UFUNCTION()
 	virtual void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance);
 	
-
+    virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 
@@ -213,6 +213,9 @@ private:
 
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& Props) const;
 	void SendXPEvent(const FEffectProperties& Props);
+
+	bool bTopOffHealth = false;
+	bool bTopOffMana = false;
 	
 };
 
