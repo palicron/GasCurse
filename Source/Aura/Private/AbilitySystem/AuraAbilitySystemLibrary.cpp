@@ -12,7 +12,7 @@
 #include "UI/HUD/AuraHUD.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 
-UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WordContextObject)
+bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WordContextObject,FWidgetControllerParams& outWCParams,AAuraHUD*& OutAuraHud)
 {
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WordContextObject, 0))
 	{
@@ -21,29 +21,56 @@ UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(
 			AAuraPlayerState* PS = PC->GetPlayerState<AAuraPlayerState>();
 			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return AuraHUD->GetOverlayWidgetController(WidgetControllerParams);
+			OutAuraHud = AuraHUD;
+			outWCParams.AttributeSet = AS;
+			outWCParams.AbilitySystemComponent = ASC;
+			outWCParams.PlayerState = PS;
+			outWCParams.PlayerController = PC;
+			return true;
 		}
 	}
 
+	return false;
+}
+
+UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WordContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AAuraHUD* AuraHUD;
+	if(MakeWidgetControllerParams(WordContextObject,WCParams,AuraHUD))
+	{
+		return AuraHUD->GetOverlayWidgetController(WCParams);
+	}
+	
 	return nullptr;
 }
 
 UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidgetController(
 	const UObject* WordContextObject)
 {
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(WordContextObject, 0))
-	{
-		if (AAuraHUD* AuraHUD = Cast<AAuraHUD>(PC->GetHUD()))
-		{
-			AAuraPlayerState* PS = PC->GetPlayerState<AAuraPlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-			const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-			return AuraHUD->GetUAttributeMenuWidgetController(WidgetControllerParams);
-		}
-	}
 
+	FWidgetControllerParams WCParams;
+	AAuraHUD* AuraHUD;
+
+	if(MakeWidgetControllerParams(WordContextObject,WCParams,AuraHUD))
+	{
+		return AuraHUD->GetUAttributeMenuWidgetController(WCParams);
+	}
+	
+	return nullptr;
+	
+}
+
+USpellMenuWidgetController* UAuraAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WordContextObject)
+{
+	FWidgetControllerParams WCParams;
+	AAuraHUD* AuraHUD;
+
+	if(MakeWidgetControllerParams(WordContextObject,WCParams,AuraHUD))
+	{
+		return AuraHUD->GetSpellMenuWidgetController(WCParams);
+	}
+	
 	return nullptr;
 }
 
