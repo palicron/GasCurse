@@ -27,7 +27,7 @@ void UAuraWidgetController::BindCallbacksToDependencies()
 	
 }
 
-void UAuraWidgetController::OnInitilizeStarupAbilities(UAuraAbilitySystemComponent* AuraASC)
+void UAuraWidgetController::OnInitilizeStarupAbilities()
 {
 	if (!GetAuraASC() && !GetAuraASC()->bStartupAbilitiesGiven)
 	{
@@ -59,7 +59,7 @@ AAuraPlayerState* UAuraWidgetController::GetAuraPS()
 {
 	if(!AuraPlayerState)
 	{
-		AuraPlayerState = Cast<AAuraPlayerState>(AuraPlayerState);
+		AuraPlayerState = Cast<AAuraPlayerState>(PlayerState);
 	}
 
 	return AuraPlayerState;
@@ -69,7 +69,7 @@ UAuraAbilitySystemComponent* UAuraWidgetController::GetAuraASC()
 {
 	if(!AuraAbilitySystemComponent)
 	{
-		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(AuraAbilitySystemComponent);
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	}
 
 	return AuraAbilitySystemComponent;
@@ -77,10 +77,9 @@ UAuraAbilitySystemComponent* UAuraWidgetController::GetAuraASC()
 
 UAuraAttributeSet* UAuraWidgetController::GetAuraAS()
 {
-
 	if(!AuraAttributeSet)
 	{
-		AuraAttributeSet = Cast<UAuraAttributeSet>(AuraAttributeSet);
+		AuraAttributeSet = Cast<UAuraAttributeSet>(AttributeSet);
 	}
 
 	return AuraAttributeSet;

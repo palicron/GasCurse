@@ -10,8 +10,6 @@
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	
-	
 	OnHealthChangedDelegate.Broadcast(GetAuraAS()->GetHealth());
 	OnMaxHealthChangedDelegate.Broadcast(GetAuraAS()->GetMaxHealth());
 	OnManaChangedDelegate.Broadcast(GetAuraAS()->GetMana());
@@ -20,12 +18,12 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	GetAuraPS()->OnXpChangeDelegate.AddUObject(this,&UOverlayWidgetController::OnXPChange);
-	GetAuraPS()->OnLevelChangeDelegate.AddLambda([&] (int32 LevelChange)
+	GetAuraPS()->OnXpChangeDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChange);
+	GetAuraPS()->OnLevelChangeDelegate.AddLambda([&](int32 LevelChange)
 	{
 		OnPlayerLevelChangeDelegate.Broadcast(LevelChange);
 	});
-
+	
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(GetAuraAS()->GetHealthAttribute()).AddUObject(
 		this, &UOverlayWidgetController::HealthChanged);
@@ -40,7 +38,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		if (GetAuraASC()->bStartupAbilitiesGiven)
 		{
-			OnInitilizeStarupAbilities(GetAuraASC());
+			OnInitilizeStarupAbilities();
 		}
 		else
 		{
@@ -71,8 +69,8 @@ void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data)
 
 void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Data) const
 {
-	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
-	OnMaxHealthChangedDelegate.Broadcast(AuraAttributeSet->GetMaxHealth());
+	const UAuraAttributeSet* InAuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+	OnMaxHealthChangedDelegate.Broadcast(InAuraAttributeSet->GetMaxHealth());
 }
 
 void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) const
@@ -82,15 +80,14 @@ void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Data) c
 
 void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Data) const
 {
-	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
-	OnMaxManaChangedDelegate.Broadcast(AuraAttributeSet->GetMaxMana());
+	const UAuraAttributeSet* InAuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
+	OnMaxManaChangedDelegate.Broadcast(InAuraAttributeSet->GetMaxMana());
 }
 
 
-void UOverlayWidgetController::OnXPChange(int32 NewXP) const
+void UOverlayWidgetController::OnXPChange(int32 NewXP) 
 {
-	const AAuraPlayerState* CurrePlayerstate = CastChecked<AAuraPlayerState>(PlayerState);
-	const ULevelUpInfo* LevelUpInfo = CurrePlayerstate->LevelUpInfo;
+	const ULevelUpInfo* LevelUpInfo = GetAuraPS()->LevelUpInfo;
 
 	checkf(LevelUpInfo,TEXT("NO Level Up inof in player state"));
 

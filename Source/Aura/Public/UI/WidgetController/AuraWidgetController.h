@@ -93,7 +93,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 
-	void OnInitilizeStarupAbilities(UAuraAbilitySystemComponent* AuraASC);
+	void OnInitilizeStarupAbilities();
 
 	AAuraPlayerController* GetAuraPC();
 
