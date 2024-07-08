@@ -73,7 +73,9 @@ public:
  FGameplayTag Abilities_Status_None;
  
  FGameplayTag Abilities_Fire_FireBolt;
-
+ 
+ FGameplayTag Abilities_Lightning_Electrocute;
+ 
  FGameplayTag Cooldown_Fire_FireBolt;
  
  FGameplayTag CombatSocket_Weapon;

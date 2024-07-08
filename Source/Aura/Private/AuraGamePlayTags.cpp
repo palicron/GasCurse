@@ -201,5 +201,8 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Cooldown_Fire_FireBolt= UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Cooldown.Fire.FireBolt"),FString("Cooldown FireBolt"));
+
+	GameplayTags.Abilities_Lightning_Electrocute= UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.Electrocute"),FString("Electrocute"));
 	
 }

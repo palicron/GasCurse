@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
+#include "Abilities/GameplayAbility.h"
 #include "AbilityInfo.generated.h"
 
 
@@ -31,6 +32,12 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<const UMaterialInterface> BackGroundMaterial = nullptr;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	int32 LevelRequirement = 1;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TSubclassOf<UGameplayAbility> Ability;
 	
 };
 /**

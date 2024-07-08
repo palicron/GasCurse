@@ -201,3 +201,13 @@ int32 UAuraAbilitySystemLibrary::GetXPRewardForClassAndLevel(const UObject* Word
 	FCharacterClassDefaultInfo CharacterInfo = CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
 	return static_cast<int32>(CharacterInfo.XPReward.GetValueAtLevel(CharacterLevel));
 }
+
+UAbilityInfo* UAuraAbilitySystemLibrary::GetAbilityInfo(const UObject* WordContextObject)
+{
+	if (const AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WordContextObject)))
+	{
+		return AuraGM->AbilityInfo;
+	}
+
+	return nullptr;
+}
