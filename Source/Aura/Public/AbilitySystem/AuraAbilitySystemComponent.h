@@ -52,6 +52,10 @@ public:
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+
+	void UpdateAbilityStatus(int32 Level);
+
+	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	
 protected:
 
