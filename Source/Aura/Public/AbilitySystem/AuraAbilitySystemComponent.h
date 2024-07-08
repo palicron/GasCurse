@@ -9,6 +9,7 @@ class UAuraAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAsseTagSignature, const FGameplayTagContainer& /* AssetTags*/);
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChangeSignature,const FGameplayTag&/* AbilityTag*/,const FGameplayTag& /**Status change*/)
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
@@ -29,6 +30,8 @@ public:
 
 	FAbilitiesGiven AbilitiesGivenDelegate;
 
+	FAbilityStatusChangeSignature AbilityStatusChangeDelegate;
+	
 	uint8 bStartupAbilitiesGiven : 1;
  
 
@@ -63,5 +66,8 @@ protected:
 	void Client_EffectApplied(UAbilitySystemComponent* AbilitySystemComp, const FGameplayEffectSpec& GamePlaySpec, FActiveGameplayEffectHandle ActiveHandel);
 
 	virtual void OnRep_ActivateAbilities() override;
+
+	UFUNCTION(Client,Reliable)
+	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag,const FGameplayTag& StatusChange);
 	
 };

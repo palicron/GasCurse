@@ -156,7 +156,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 	{
 		for (const auto& Info : AbilityInfo->AbilityInformation)
 		{
-			if(Info.Key.IsValid() || Level < Info.Value.LevelRequirement )
+			if(!Info.Key.IsValid() || Level < Info.Value.LevelRequirement )
 			{
 				continue;
 			}
@@ -167,6 +167,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 				AbilitySpec.DynamicAbilityTags.AddTag(FAuraGamePlayTags::Get().Abilities_Status_Eligible);
 				GiveAbility(AbilitySpec);
 				MarkAbilitySpecDirty(AbilitySpec);
+				ClientUpdateAbilityStatus(Info.Key,FAuraGamePlayTags::Get().Abilities_Status_Eligible);
 			}
 		}
 	}
@@ -211,5 +212,10 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGivenDelegate.Broadcast();
 	}
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusChange)
+{
+	AbilityStatusChangeDelegate.Broadcast(AbilityTag,StatusChange);
 }
 
