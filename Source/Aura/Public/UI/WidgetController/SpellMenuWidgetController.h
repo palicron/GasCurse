@@ -22,5 +22,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStatChangedSignature OnSpellPointsChangedDelegate;
-	
+
+	//void SpellGlobleSelected(const FGamplayTag)
 };

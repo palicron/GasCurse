@@ -102,4 +102,6 @@ protected:
 	UAuraAbilitySystemComponent* GetAuraASC();
 
 	UAuraAttributeSet* GetAuraAS();
+
+	
 };
