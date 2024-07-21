@@ -37,5 +37,6 @@ public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Summoning")
 	float SpawnSpread = 90.f;
 
+	//virtual void ActivateAbilityWithTargetData
 
 };

@@ -131,6 +131,9 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Effects.HitReact"), FString("Tag granted when hit Reacting"));
 
+	GameplayTags.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.None"), FString("Tag To None"));
+	
 	GameplayTags.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Attack"), FString("Tag To Melee Attack"));
 
