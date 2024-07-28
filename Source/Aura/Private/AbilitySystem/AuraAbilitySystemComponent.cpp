@@ -167,7 +167,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 				AbilitySpec.DynamicAbilityTags.AddTag(FAuraGamePlayTags::Get().Abilities_Status_Eligible);
 				GiveAbility(AbilitySpec);
 				MarkAbilitySpecDirty(AbilitySpec);
-				ClientUpdateAbilityStatus(Info.Key,FAuraGamePlayTags::Get().Abilities_Status_Eligible);
+				ClientUpdateAbilityStatus(Info.Key,FAuraGamePlayTags::Get().Abilities_Status_Eligible,1);
 			}
 		}
 	}
@@ -188,6 +188,39 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 	}
 
 	return nullptr;
+}
+
+void UAuraAbilitySystemComponent::Server_SpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
+{
+	FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag);
+	
+	if(!AbilitySpec)
+	{
+		return;
+	}
+
+	if(GetAvatarActor()->Implements<UPlayerInterface>())
+	{
+		IPlayerInterface::Execute_AddToSpellPoints(GetAvatarActor(),-1);
+	}
+	
+	const FAuraGamePlayTags GameplayTags = FAuraGamePlayTags::Get();
+	FGameplayTag Status = GetStatusFromSpec(*AbilitySpec);
+
+	if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
+	{
+		AbilitySpec->DynamicAbilityTags.RemoveTag(GameplayTags.Abilities_Status_Eligible);
+		AbilitySpec->DynamicAbilityTags.AddTag(GameplayTags.Abilities_Status_Unlocked);
+		Status = GameplayTags.Abilities_Status_Unlocked;
+	}
+	else if (Status.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) || Status.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
+	{
+		AbilitySpec->Level++;
+	
+	}
+	
+	ClientUpdateAbilityStatus(AbilityTag,Status,AbilitySpec->Level);
+	MarkAbilitySpecDirty(*AbilitySpec);
 }
 
 void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FGameplayTag& AttributeTag)
@@ -214,8 +247,8 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 	}
 }
 
-void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusChange)
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusChange,const int32 AbilityLevel)
 {
-	AbilityStatusChangeDelegate.Broadcast(AbilityTag,StatusChange);
+	AbilityStatusChangeDelegate.Broadcast(AbilityTag,StatusChange,AbilityLevel);
 }
 
