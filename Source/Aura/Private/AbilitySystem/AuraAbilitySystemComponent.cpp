@@ -190,6 +190,32 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 	return nullptr;
 }
 
+bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription,FString& OutNextLeventDescription)
+{
+	const FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag);
+	
+	if(!AbilitySpec)
+	{
+		if(UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor()))
+		{
+			OutDescription = UAuraGameplayAbility::GetLockDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+			OutNextLeventDescription = FString();
+		}
+		return false;
+	}
+
+	if(	UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec->Ability))
+	{
+		OutDescription = AuraAbility->GetDescription(AbilitySpec->Level);
+		OutNextLeventDescription = AuraAbility->GetNextLevelDescription(AbilitySpec->Level);
+		return true;
+	}
+	
+
+	
+	return false;
+}
+
 void UAuraAbilitySystemComponent::Server_SpendSpellPoint_Implementation(const FGameplayTag& AbilityTag)
 {
 	FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag);
