@@ -207,5 +207,23 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Lightning_Electrocute= UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Lightning.Electrocute"),FString("Electrocute"));
-	
+
+//Debuff
+
+	GameplayTags.Debuff_Burn= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Debuff.Burn"),FString("Burn Debuff"));
+
+	GameplayTags.Debuff_Stun= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Debuff.Stun"),FString("Stun Debuff"));
+
+	GameplayTags.Debuff_Arcane= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Debuff.Arcane"),FString("Arcane Debuff"));
+
+	GameplayTags.Debuff_Physical= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Debuff.Physical"),FString("Physical Debuff"));
+
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.Damage_Arcane,GameplayTags.Debuff_Arcane);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.Damage_Fire,GameplayTags.Debuff_Burn);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.Damage_Lightning,GameplayTags.Debuff_Stun);
+	GameplayTags.DamageTypeToDebuffs.Add(GameplayTags.Damage_Physical,GameplayTags.Debuff_Physical);
 }

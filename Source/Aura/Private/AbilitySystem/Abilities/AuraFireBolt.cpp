@@ -6,7 +6,7 @@
 
 FString UAuraFireBolt::GetDescription(const int32 Level) const
 {
-	const float  ScaleDamage = GetDamageByType(Level,FAuraGamePlayTags::Get().Damage_Fire);
+	const float  ScaleDamage = Damage.GetValueAtLevel(Level);
 	const float ManaCost = GetManaCost(Level);
 	const float Cooldown = GetCoolDown(Level);
 	if(Level == 1)
@@ -34,7 +34,8 @@ FString UAuraFireBolt::GetDescription(const int32 Level) const
 
 FString UAuraFireBolt::GetNextLevelDescription(const int32 Level) const
 {
-	const float  ScaleDamage = GetDamageByType(Level,FAuraGamePlayTags::Get().Damage_Fire);
+	
+	const float  ScaleDamage = Damage.GetValueAtLevel(Level);;
 	const float ManaCost = GetManaCost(Level);
 	const float Cooldown = GetCoolDown(Level);
 	return FString::Printf(
