@@ -26,8 +26,6 @@ struct AuraDamageStatics
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArcaneResistance);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(PhysicalResistance);
 
-
-	TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition> TagToCapturesDef;
 	
 	AuraDamageStatics()
 	{
@@ -44,17 +42,6 @@ struct AuraDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,ArcaneResistance,Target,false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet,PhysicalResistance,Target,false);
 
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_Armor,ArmorDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_BlockChance,BlockChanceDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitResistance,CriticalHitResistanceDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_ArmorPenetration,ArmorPenetrationDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitChange,CriticalHitChangeDef);
-		
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitDamage,CriticalHitDamageDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Fire,FireResistanceDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Arcane,ArcaneResistanceDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Lightning,LightningResistanceDef);
-		TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Physical,PhysicalResistanceDef);
 	}
 };
 
@@ -79,8 +66,24 @@ UExecCalc_Damage::UExecCalc_Damage()
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
-	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
+
+	TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition> TagToCapturesDef;
+
+	
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_Armor,DamageStatics().ArmorDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_BlockChance,DamageStatics().BlockChanceDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitResistance,DamageStatics().CriticalHitResistanceDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_ArmorPenetration,DamageStatics().ArmorPenetrationDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitChange,DamageStatics().CriticalHitChangeDef);
+		
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Secondary_CriticalHitDamage,DamageStatics().CriticalHitDamageDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Fire,DamageStatics().FireResistanceDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Arcane,DamageStatics().ArcaneResistanceDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Lightning,DamageStatics().LightningResistanceDef);
+	TagToCapturesDef.Add(FAuraGamePlayTags::Get().Attributes_Resistance_Physical,DamageStatics().PhysicalResistanceDef);
+	
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
@@ -110,15 +113,20 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParams.SourceTags = SourceTags;
 	EvaluationParams.TargetTags = TargetTags;
 
+
+	//Debuff
+
+	DetermineDebuff(ExecutionParams, Spec, EvaluationParams,TagToCapturesDef);
+	
 	// Get Damage Set By Collar Magnitude
 	float Damage = 0.f;
 	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGamePlayTags::Get().DamageTypeToResistances)
 	{
 		const FGameplayTag DamageType = Pair.Key;
 		const FGameplayTag ResistanceType = Pair.Value;
-		checkf(AuraDamageStatics().TagToCapturesDef.Contains(ResistanceType),TEXT("TagsTOCapture Doesnt conitain : (%s) in Exel"),*ResistanceType.ToString());
+		checkf(TagToCapturesDef.Contains(ResistanceType),TEXT("TagsTOCapture Doesnt conitain : (%s) in Exel"),*ResistanceType.ToString());
 		
-		const FGameplayEffectAttributeCaptureDefinition  CaptureRef = AuraDamageStatics().TagToCapturesDef[ResistanceType];
+		const FGameplayEffectAttributeCaptureDefinition  CaptureRef = TagToCapturesDef[ResistanceType];
 		float Resistance = 0;
 		ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(CaptureRef,EvaluationParams,Resistance);
 		Resistance = FMath::Clamp(Resistance,0,100.f);
@@ -190,4 +198,34 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(),EGameplayModOp::Additive,Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
+}
+
+
+void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParameters& ExecutionParams, const FGameplayEffectSpec& Spec, FAggregatorEvaluateParameters EvaluationParams
+	,const TMap<FGameplayTag,FGameplayEffectAttributeCaptureDefinition>& TagToDefs ) const
+{
+	const FAuraGamePlayTags&  GamePlayTags = FAuraGamePlayTags::Get();
+	for (const TTuple<FGameplayTag,FGameplayTag>& Pair : GamePlayTags.DamageTypeToDebuffs)
+	{
+		const FGameplayTag& DamageType = Pair.Key;
+		const FGameplayTag& DebuffType = Pair.Value;
+		const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType,false,-1.f);
+		if(TypeDamage >= 0.f)
+		{
+			//Determine if ther was a succesfull debuff
+
+			const float SourceDebuffChance = Spec.GetSetByCallerMagnitude(GamePlayTags.Debuff_Chance,false,-1.f);
+			float TargetDebuffResistace = 0.f;
+			const FGameplayTag& ResistanceTag = GamePlayTags.DamageTypeToResistances[DamageType];
+			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(TagToDefs[ResistanceTag],EvaluationParams,TargetDebuffResistace);
+			TargetDebuffResistace = FMath::Max<float>(TargetDebuffResistace,0.f);
+
+			const float EffectiveDebuffChance = SourceDebuffChance * ( 100 - TargetDebuffResistace) / 100.f;
+			const bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
+			if(bDebuff)
+			{
+				
+			}
+		}
+	}
 }
