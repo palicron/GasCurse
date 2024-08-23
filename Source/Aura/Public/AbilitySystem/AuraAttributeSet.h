@@ -211,6 +211,9 @@ public:
 
 private:
 
+	void HandleIncomingDamage(const FEffectProperties& Props);
+	void HandleIncomingXP(const FEffectProperties& Props);
+	void HandleDebuff(const FEffectProperties& Props);
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& Props) const;
 	void SendXPEvent(const FEffectProperties& Props);
 
@@ -218,4 +221,6 @@ private:
 	bool bTopOffMana = false;
 	
 };
+
+
 

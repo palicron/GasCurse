@@ -66,7 +66,7 @@ public:
 	void SetIsDebuffDamage(bool bInDamage) { DebuffDamage = bInDamage;}
 	void SetDebuffDuration(bool bInDuration) { DebuffDuration = bInDuration;}
 	void SetDebuffFrecuency(bool bInFrecuency) { DebuffFrequency = bInFrecuency;}
-	
+	void SetDamageTypes(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType;};
 	
 	void SetIsCriticalHit(const bool bInCriticalHit) { bIsCriticalHit = bInCriticalHit; }
 	void SetIsBlockHit(const bool bInIsBlockHit) { bIsBlockHit = bInIsBlockHit; }

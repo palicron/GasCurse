@@ -224,7 +224,12 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 			const bool bDebuff = FMath::RandRange(1,100) < EffectiveDebuffChance;
 			if(bDebuff)
 			{
-				
+				FGameplayEffectContextHandle ContextHandle =  Spec.GetContext();
+				UAuraAbilitySystemLibrary::SetIsSuccefulDebuff(ContextHandle,true);
+				UAuraAbilitySystemLibrary::SetDebuffDamage(ContextHandle,Spec.GetSetByCallerMagnitude(GamePlayTags.Debuff_Damage,false,-1.f));
+				UAuraAbilitySystemLibrary::SetDebuffDuration(ContextHandle,Spec.GetSetByCallerMagnitude(GamePlayTags.Debuff_Duration,false,-1.f));
+				UAuraAbilitySystemLibrary::SetDebuffFrequency(ContextHandle,Spec.GetSetByCallerMagnitude(GamePlayTags.Debuff_Frequency,false,-1.f));
+				UAuraAbilitySystemLibrary::SetDebuffType(ContextHandle,DamageType);
 			}
 		}
 	}
