@@ -63,9 +63,9 @@ public:
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType;}
 
 	void SetIsSuccessfulDebuff(bool bInDebuff) { bIsSuccessfulDebuff = bInDebuff;}
-	void SetIsDebuffDamage(bool bInDamage) { DebuffDamage = bInDamage;}
-	void SetDebuffDuration(bool bInDuration) { DebuffDuration = bInDuration;}
-	void SetDebuffFrecuency(bool bInFrecuency) { DebuffFrequency = bInFrecuency;}
+	void SetIsDebuffDamage(float bInDamage) { DebuffDamage = bInDamage;}
+	void SetDebuffDuration(float bInDuration) { DebuffDuration = bInDuration;}
+	void SetDebuffFrecuency(float bInFrecuency) { DebuffFrequency = bInFrecuency;}
 	void SetDamageTypes(TSharedPtr<FGameplayTag> InDamageType) { DamageType = InDamageType;};
 	
 	void SetIsCriticalHit(const bool bInCriticalHit) { bIsCriticalHit = bInCriticalHit; }
