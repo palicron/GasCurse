@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UDebuffNiagaraComponent;
 class UNiagaraSystem;
 class UGameplayAbility;
 class UGameplayEffect;
@@ -48,7 +49,15 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual FOnASCRegisteredSignature GetOnASCRegisterDelegate() override;
+	virtual FOnDeathSignature GetOnDeathDelegate() override;
+	
+	FOnASCRegisteredSignature OnASCRegisterRegister;
+	UPROPERTY(BlueprintAssignable)
+	FOnDeathSignature OnDeathDelegate;
 	/**Combat Interface*/
+
+
 	
 protected:
 	
@@ -125,7 +134,9 @@ protected:
 	 */
 
 	int32 MinionCount = 0;
-	
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 private:
 
 	UPROPERTY(EditAnywhere,Category="Abilities")
@@ -136,5 +147,6 @@ private:
 
 	UPROPERTY(EditAnywhere,Category="Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
 
 };

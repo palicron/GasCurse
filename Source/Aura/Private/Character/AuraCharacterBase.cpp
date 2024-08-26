@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AuraGamePlayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Aura/Aura.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -23,6 +24,10 @@ AAuraCharacterBase::AAuraCharacterBase()
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Projectile,ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
+
+	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("Burn Debuff Component");
+	BurnDebuffComponent->SetupAttachment(GetRootComponent());
+	BurnDebuffComponent->DebuffTag = FAuraGamePlayTags::Get().Debuff_Burn;
 }
 
 
@@ -160,6 +165,7 @@ void AAuraCharacterBase::MultiCastHandleDeath_Implementation()
 
 	Dissolve();
 	bDead = true;
+	OnDeathDelegate.Broadcast(this);
 }
 
 UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
@@ -192,6 +198,16 @@ void AAuraCharacterBase::IncrementMinionCount_Implementation(int32 Amount)
 ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
 {
 	return CharacterClass;
+}
+
+FOnASCRegisteredSignature AAuraCharacterBase::GetOnASCRegisterDelegate()
+{
+	return OnASCRegisterRegister;
+}
+
+FOnDeathSignature AAuraCharacterBase::GetOnDeathDelegate()
+{
+	return OnDeathDelegate;
 }
 
 

@@ -130,6 +130,8 @@ void AAuraEnemy::InitAbilityActorInfo()
 	{
 		InitializeDefaultAttributes();
 	}
+
+	OnASCRegisterRegister.Broadcast(AbilitySystemComponent);
 }
 
 void AAuraEnemy::PossessedBy(AController* NewController)
