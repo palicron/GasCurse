@@ -248,6 +248,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 
 		if(NewHealth <= 0.f)
 		{
+			//TODO: USe death impulse
 			if(ICombatInterface* CombatInt = Cast<ICombatInterface>(Props.TargetAvatarActor))
 			{
 				CombatInt->Die();
