@@ -260,6 +260,8 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			FGameplayTagContainer TagContainer;
 			TagContainer.AddTag(FAuraGamePlayTags::Get().Effects_HitReact);
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			const FVector& KnockBackForce = UAuraAbilitySystemLibrary::GetKnockBackForce(Props.EffectContextHandle);
+			Props.TargetCharacter->LaunchCharacter(KnockBackForce,true,true);	
 		}
 			
 		ShowFloatingText(Props, LocalIncomingDamage,UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle),
