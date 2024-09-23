@@ -19,4 +19,15 @@ public:
 	virtual FString GetDescription(const int32 Level) const override;
 
 	virtual FString GetNextLevelDescription(const int32 Level) const override;
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,const AActor* HomingTarget);
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
+	int32 MaxNumProjectile = 5;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
+	float ProjectileSpread = 90.f;
 };
