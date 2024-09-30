@@ -21,7 +21,7 @@ public:
 	virtual FString GetNextLevelDescription(const int32 Level) const override;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,const AActor* HomingTarget);
+	void SpawnProjectiles(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag,const bool bPitchOverRide, const float PitchOverRide, const AActor* HomingTarget);
 
 protected:
 
