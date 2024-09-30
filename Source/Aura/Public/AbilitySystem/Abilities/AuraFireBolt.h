@@ -30,4 +30,13 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
 	float ProjectileSpread = 90.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
+	float HomingAccelerationMin = 1600.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
+	float HomingAccelerationMax = 3200.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Firebolt")
+	bool bLaunchHomingProjectiles = true;
 };
