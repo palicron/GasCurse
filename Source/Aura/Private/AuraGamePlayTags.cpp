@@ -239,4 +239,20 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	GameplayTags.Debuff_Duration= UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Debuff.Duration"),FString("Duration Debuff"));
 
+	/**
+	 *Player Block tags
+	 **/
+
+	GameplayTags.Player_Block_CursorTrace = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Player.Block.CursorTrace"),FString("Block CursorTrace"));
+
+	GameplayTags.Player_Block_InputHeld = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Player.Block.InputHeld"),FString("Block InputHeld"));
+
+	GameplayTags.Player_Block_InputPressed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Player.Block.InputPressed"),FString("Block InputPressed"));
+
+	GameplayTags.Player_Block_InputReleased = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Player.Block.InputReleased"),FString("Block InputReleased"));
 }
+
