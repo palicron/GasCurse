@@ -51,6 +51,7 @@ public:
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnASCRegisteredSignature GetOnASCRegisterDelegate() override;
 	virtual FOnDeathSignature GetOnDeathDelegate() override;
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	
 	FOnASCRegisteredSignature OnASCRegisterRegister;
 	UPROPERTY(BlueprintAssignable)
