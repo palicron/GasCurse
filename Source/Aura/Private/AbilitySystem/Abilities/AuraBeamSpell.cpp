@@ -30,7 +30,7 @@ void UAuraBeamSpell::StoreOwnerVariables()
 void UAuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 {
 	check(OwnerPlayerCharacter);
-	if(OwnerPlayerCharacter->Implements<UCombatInterface>())
+	if(!OwnerPlayerCharacter->Implements<UCombatInterface>())
 	{
 		return;
 	}
@@ -51,7 +51,7 @@ void UAuraBeamSpell::TraceFirstTarget(const FVector& BeamTargetLocation)
 		TraceTypeQuery1,
 		false,
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		HitResult,
 		false);
 
