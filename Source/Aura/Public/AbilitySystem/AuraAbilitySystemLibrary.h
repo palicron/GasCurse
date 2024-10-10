@@ -104,6 +104,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySytemLibrary|GamePlayMechanics")
 	static void GetLifePlayerWithinRadius(const UObject* WordContextObject,TArray<AActor*>& OutOverLappingActors, const TArray<AActor*>& ActorsToIgnore,float Radius,const FVector& SphereOrigin);
 
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySytemLibrary|GamePlayMechanics")
+	static void GetClosestTargets(const int32 MaxTargets, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets, const FVector& Origin);
+	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySytemLibrary|GamePlayMechanics")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
 
