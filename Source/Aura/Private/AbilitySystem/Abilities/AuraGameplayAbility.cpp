@@ -20,6 +20,7 @@ FString UAuraGameplayAbility::GetLockDescription(const int32 Level)
 	return FString::Printf(TEXT("<Default>Spell Locked Until Level : </><Level>%d, </>"), Level);
 }
 
+
 float UAuraGameplayAbility::GetManaCost(float InLevel) const
 {
 	float ManaCost = 0.f;
