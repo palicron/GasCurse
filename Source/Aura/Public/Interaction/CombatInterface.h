@@ -89,7 +89,7 @@ public:
 
 	virtual FOnASCRegisteredSignature GetOnASCRegisterDelegate() = 0;
 
-	virtual FOnDeathSignature GetOnDeathDelegate() = 0;
+	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void SetInShockLoop(const bool bInLoop);

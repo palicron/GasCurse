@@ -208,7 +208,7 @@ FOnASCRegisteredSignature AAuraCharacterBase::GetOnASCRegisterDelegate()
 	return OnASCRegisterRegister;
 }
 
-FOnDeathSignature AAuraCharacterBase::GetOnDeathDelegate()
+FOnDeathSignature& AAuraCharacterBase::GetOnDeathDelegate()
 {
 	return OnDeathDelegate;
 }
