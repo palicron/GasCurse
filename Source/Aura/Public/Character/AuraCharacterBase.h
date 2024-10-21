@@ -40,6 +40,7 @@ public:
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MultiCastHandleDeath(const FVector& DeathImpulse);
 	
+
 	/**Combat Interface*/
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatar_Implementation() override;
@@ -58,14 +59,23 @@ public:
 	FOnDeathSignature OnDeathDelegate;
 	/**Combat Interface*/
 
+    UPROPERTY(Replicated,BlueprintReadOnly)
+	bool bIsStunned = false;
 
+	UFUNCTION()
+	virtual void StunTagChanged(const FGameplayTag CallbackTag,const int32 NewCount);
 	
 protected:
 	
 	virtual void BeginPlay() override;
 
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	bool bDead = false;
-
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly , Category= "Combat")
+	float BaseWalkSpeed = 600.f;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 	

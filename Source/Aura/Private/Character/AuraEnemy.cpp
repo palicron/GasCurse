@@ -36,7 +36,7 @@ AAuraEnemy::AAuraEnemy()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	
+	BaseWalkSpeed = 250.f;
 }
 
 void AAuraEnemy::BeginPlay()
@@ -125,7 +125,7 @@ void AAuraEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
-
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGamePlayTags::Get().Debuff_Stun,EGameplayTagEventType::NewOrRemoved).AddUObject(this,&AAuraEnemy::StunTagChanged);
 	if(HasAuthority())
 	{
 		InitializeDefaultAttributes();
