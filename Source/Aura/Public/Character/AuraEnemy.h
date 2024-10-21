@@ -73,5 +73,6 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
-	
+
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
 };

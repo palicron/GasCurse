@@ -58,6 +58,7 @@ public:
 
 protected:
 
+	virtual void OnRep_IsStunned() override;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Camera")
 	TObjectPtr<USpringArmComponent> ArmSpringCompoent;
 

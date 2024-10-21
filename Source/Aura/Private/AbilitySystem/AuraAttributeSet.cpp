@@ -327,7 +327,15 @@ void UAuraAttributeSet::HandleDebuff(const FEffectProperties& Props)
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
 	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	TagContainer.Added.AddTag(GameplayTag.DamageTypeToDebuffs[DamageType]);
+	const FGameplayTag Debufftag = GameplayTag.DamageTypeToDebuffs[DamageType];
 	TagContainer.CombinedTags.AddTag(GameplayTag.DamageTypeToDebuffs[DamageType]);
+	if(Debufftag.MatchesTagExact(FAuraGamePlayTags::Get().Debuff_Stun))
+	{
+		TagContainer.CombinedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputReleased);
+		TagContainer.CombinedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_CursorTrace);
+		TagContainer.CombinedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputHeld);
+		TagContainer.CombinedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputPressed);
+	}
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 	
 	

@@ -233,4 +233,9 @@ void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, const in
 	GetCharacterMovement()->MaxWalkSpeed = bIsStunned ? 0.f : BaseWalkSpeed;
 }
 
+void AAuraCharacterBase::OnRep_IsStunned()
+{
+	
+}
+
 

@@ -59,12 +59,14 @@ public:
 	FOnDeathSignature OnDeathDelegate;
 	/**Combat Interface*/
 
-    UPROPERTY(Replicated,BlueprintReadOnly)
+    UPROPERTY(ReplicatedUsing = OnRep_IsStunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 
 	UFUNCTION()
 	virtual void StunTagChanged(const FGameplayTag CallbackTag,const int32 NewCount);
-	
+
+	UFUNCTION()
+	virtual void OnRep_IsStunned();
 protected:
 	
 	virtual void BeginPlay() override;

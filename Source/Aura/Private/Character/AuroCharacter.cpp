@@ -147,6 +147,28 @@ int32 AAuraCharacter::GetSpellPoints_Implementation() const
 	return AuraPlayerState->GetSpellPoints();
 }
 
+void AAuraCharacter::OnRep_IsStunned()
+{
+	if(UAuraAbilitySystemComponent* AuraASc = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		FGameplayTagContainer BlockedTags;
+		
+		BlockedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputReleased);
+		BlockedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_CursorTrace);
+		BlockedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputHeld);
+		BlockedTags.AddTag(FAuraGamePlayTags::Get().Player_Block_InputPressed);
+		if(bIsStunned)
+		{
+			AuraASc->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			AuraASc->RemoveLooseGameplayTags(BlockedTags);
+		}
+		
+	}
+}
+
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
