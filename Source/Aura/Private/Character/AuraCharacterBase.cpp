@@ -47,9 +47,10 @@ void AAuraCharacterBase::BeginPlay()
 void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	
+
 	DOREPLIFETIME(AAuraCharacterBase,bIsStunned);
 	DOREPLIFETIME(AAuraCharacterBase,bIsBurned);
+	DOREPLIFETIME(AAuraCharacterBase,bIsBeingShocked);
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -234,6 +235,16 @@ USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation()
 	return Weapon;
 }
 
+bool AAuraCharacterBase::IsBeingShocked_Implementation() const
+{
+	return bIsBeingShocked;
+}
+
+void AAuraCharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
+{
+	bIsBeingShocked = bInShock;
+}
+
 void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount)
 {
 	bIsStunned = NewCount > 0;
@@ -245,4 +256,8 @@ void AAuraCharacterBase::OnRep_IsStunned()
 	
 }
 
+void AAuraCharacterBase::OnRep_IsBurned()
+{
+	
+}
 
