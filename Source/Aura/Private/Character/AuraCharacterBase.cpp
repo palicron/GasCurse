@@ -30,6 +30,10 @@ AAuraCharacterBase::AAuraCharacterBase()
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("Burn Debuff Component");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
 	BurnDebuffComponent->DebuffTag = FAuraGamePlayTags::Get().Debuff_Burn;
+	
+	StunDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("Stun Debuff Component");
+	StunDebuffComponent->SetupAttachment(GetRootComponent());
+	StunDebuffComponent->DebuffTag = FAuraGamePlayTags::Get().Debuff_Stun;
 }
 
 
@@ -45,6 +49,7 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProper
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	
 	DOREPLIFETIME(AAuraCharacterBase,bIsStunned);
+	DOREPLIFETIME(AAuraCharacterBase,bIsBurned);
 }
 
 void AAuraCharacterBase::InitAbilityActorInfo()
@@ -176,6 +181,8 @@ void AAuraCharacterBase::MultiCastHandleDeath_Implementation(const FVector& Deat
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->AddImpulse(DeathImpulse,NAME_None,true);
 	Dissolve();
+	StunDebuffComponent->Deactivate();
+	BurnDebuffComponent->Deactivate();
 	bDead = true;
 	OnDeathDelegate.Broadcast(this);
 }
@@ -212,7 +219,7 @@ ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
 	return CharacterClass;
 }
 
-FOnASCRegisteredSignature AAuraCharacterBase::GetOnASCRegisterDelegate()
+FOnASCRegisteredSignature& AAuraCharacterBase::GetOnASCRegisterDelegate()
 {
 	return OnASCRegisterRegister;
 }

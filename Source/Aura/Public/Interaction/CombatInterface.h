@@ -87,7 +87,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	ECharacterClass GetCharacterClass();
 
-	virtual FOnASCRegisteredSignature GetOnASCRegisterDelegate() = 0;
+	virtual FOnASCRegisteredSignature& GetOnASCRegisterDelegate() = 0;
 
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 
