@@ -253,6 +253,18 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	FName("Player.Block.InputPressed"),FString("Block InputPressed"));
 
 	GameplayTags.Player_Block_InputReleased = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Player.Block.InputReleased"),FString("Block InputReleased"));
+	FName("Player.Block
+/**
+ * Passive
+ */
+
+	GameplayTags.Abilities_Passive_LifeSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.LifeSiphon"),FString("Passive LifeSiphon"));
+
+	GameplayTags.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.ManaSiphon"),FString("Passive.ManaSiphon"));
+
+	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Passive.HaloOfProtection"),FString("HaloOfProtection"));
 }
 
