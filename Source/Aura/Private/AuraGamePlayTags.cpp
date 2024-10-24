@@ -253,7 +253,8 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	FName("Player.Block.InputPressed"),FString("Block InputPressed"));
 
 	GameplayTags.Player_Block_InputReleased = UGameplayTagsManager::Get().AddNativeGameplayTag(
-	FName("Player.Block
+	FName("Player.Block.InputReleased"),FString("Block InputReleased"));
+	
 /**
  * Passive
  */

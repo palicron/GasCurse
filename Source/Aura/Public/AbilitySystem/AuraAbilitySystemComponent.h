@@ -11,6 +11,7 @@ DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&)
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChangeSignature,const FGameplayTag&/* AbilityTag*/,const FGameplayTag& /**Status change*/,const int32 /*Level*/)
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquippedSignarture,const FGameplayTag& /* AbilityTag*/,const FGameplayTag& /* Status Tag*/,const FGameplayTag& /* Slot Tag*/,const FGameplayTag& /* PreSlotsTag*/)
+DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbilitySignature, const FGameplayTag& /* Ability Tag*/);
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
@@ -34,6 +35,8 @@ public:
 	FAbilityStatusChangeSignature AbilityStatusChangeDelegate;
 
 	FAbilityEquippedSignarture AbilityEquipped;
+
+	FDeactivatePassiveAbilitySignature DeactivatePassiveAbilityDelegate;
 	
 	uint8 bStartupAbilitiesGiven : 1;
  
