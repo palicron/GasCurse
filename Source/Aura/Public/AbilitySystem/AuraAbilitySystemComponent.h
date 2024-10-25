@@ -66,8 +66,14 @@ public:
 
 	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& AbilityTag);
 
-	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayTag GetSlotFromAbilityTag(const FGameplayTag& AbilityTag);
+	
+	bool SlotIsEmpty(const FGameplayTag& Slot);
 
+	bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+
+	FGameplayAbilitySpec* GetSpecWhitSlot(const FGameplayTag& Slot);
+	
 	void UpdateAbilityStatus(int32 Level);
 
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
