@@ -70,12 +70,18 @@ public:
 	
 	bool SlotIsEmpty(const FGameplayTag& Slot);
 
-	bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+	static bool AbilityHasSlot(const FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
 
+	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& Spec);
+	
 	FGameplayAbilitySpec* GetSpecWhitSlot(const FGameplayTag& Slot);
+
+	bool IsPassiveAbility(const FGameplayAbilitySpec& Spec) const;
 	
 	void UpdateAbilityStatus(int32 Level);
 
+	void AssignSlotToAbility(FGameplayAbilitySpec& Spec, const FGameplayTag& Slot);
+	
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 
 	UFUNCTION(Server,Reliable)
