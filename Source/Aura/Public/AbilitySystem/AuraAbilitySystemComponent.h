@@ -12,6 +12,7 @@ DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&)
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChangeSignature,const FGameplayTag&/* AbilityTag*/,const FGameplayTag& /**Status change*/,const int32 /*Level*/)
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquippedSignarture,const FGameplayTag& /* AbilityTag*/,const FGameplayTag& /* Status Tag*/,const FGameplayTag& /* Slot Tag*/,const FGameplayTag& /* PreSlotsTag*/)
 DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbilitySignature, const FGameplayTag& /* Ability Tag*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FActivatePassiveEffect, const FGameplayTag& /* Ability Tag*/,const bool /*bactivate*/);
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
@@ -37,6 +38,8 @@ public:
 	FAbilityEquippedSignarture AbilityEquipped;
 
 	FDeactivatePassiveAbilitySignature DeactivatePassiveAbilityDelegate;
+
+	FActivatePassiveEffect ActivatePassiveEffectDelegate;
 	
 	uint8 bStartupAbilitiesGiven : 1;
  
@@ -110,5 +113,8 @@ protected:
 
 	UFUNCTION(Client,Reliable)
 	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag,const FGameplayTag& StatusChange,const int32 AbilityLevel);
+
+	UFUNCTION(NetMulticast,Unreliable)
+	void Multicast_ActivatePassiveEffect(const FGameplayTag& AbilityTag,const bool bActivate);
 	
 };
