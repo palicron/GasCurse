@@ -14,7 +14,7 @@ class UAuraAbilitySystemComponent;
 struct FGameplayTag;
 class UAuraInputConfig;
 struct FInputActionValue;
-/**
+/**l
  * 
  */
 class UInputMappingContext;
@@ -36,10 +36,12 @@ public:
 	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
 
 	UFUNCTION(BlueprintCallable)
-	void ShowMagicCircle();
+	void ShowMagicCircle(UMaterialInterface* DecalMaterial = nullptr);
 
 	UFUNCTION(BlueprintCallable)
 	void HideMagicCircle();
+
+	
 protected:
 	
 	virtual void BeginPlay() override;

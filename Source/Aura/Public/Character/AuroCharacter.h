@@ -51,6 +51,10 @@ public:
 	virtual int32 GetAttributePoints_Implementation() const override;
 
 	virtual int32 GetSpellPoints_Implementation() const override;
+
+	virtual void ShowMagicCircle_Implementation(UMaterialInterface* DecalInterface = nullptr) override;
+
+	virtual void HideMagicCircle_Implementation() override;
 	/*End Player Interface*/
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)

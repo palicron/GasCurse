@@ -223,3 +223,20 @@ void AAuraCharacter::InitAbilityActorInfo()
 		InitializeDefaultAttributes();
 	}
 }
+
+
+void AAuraCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalInterface)
+{
+	if(	AAuraPlayerController* AuraPlayerController =  Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->ShowMagicCircle(DecalInterface);
+	}
+}
+
+void AAuraCharacter::HideMagicCircle_Implementation()
+{
+	if(	AAuraPlayerController* AuraPlayerController =  Cast<AAuraPlayerController>(GetController()))
+	{
+		AuraPlayerController->HideMagicCircle();
+	}
+}

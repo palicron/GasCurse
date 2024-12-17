@@ -19,10 +19,12 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UDecalComponent> MagicCircleDecal;
+	
 protected:
 	
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UDecalComponent> MagicCircleDecal;
 };
