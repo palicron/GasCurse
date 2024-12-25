@@ -24,7 +24,10 @@ void UPassiveNiagaraComponent::BeginPlay()
 	{
 		CombatInterface->GetOnASCRegisterDelegate().AddLambda([&](UAbilitySystemComponent* ASC)
 		{
-			AuraASC->ActivatePassiveEffectDelegate.AddUObject(this,&UPassiveNiagaraComponent::OnPassiveActivate);
+			if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(ASC))
+			{
+				AuraASC->ActivatePassiveEffectDelegate.AddUObject(this,&UPassiveNiagaraComponent::OnPassiveActivate);
+			}
 		});
 	}
 }
