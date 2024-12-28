@@ -52,14 +52,27 @@ struct FDamageEffectParams
 	FVector DeathImpulse = FVector::ZeroVector ;
 
 	UPROPERTY(BlueprintReadWrite)
-	float KnockBackForceMagnitude= 0.f;
+	float KnockBackForceMagnitude= 0.f;	
 
 	UPROPERTY(BlueprintReadWrite)
 	float KnockBackChance = 0.f;
 	
 	UPROPERTY(BlueprintReadWrite)
-	FVector KnockBackForce = FVector::ZeroVector ;
+	FVector KnockBackForce = FVector::ZeroVector;
+
+	//Radial Damage
 	
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadialDamage = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -79,6 +92,11 @@ public:
 	FVector GetDeathImpulse() const {return DeathImpulse;}
 	FVector GetKnockBackForce() const {return KnockBackForce;}
 	
+	bool IsRadialDamage() const {return bIsRadialDamage;}
+	float GetRadialDamageInnerRadius() const {return RadialDamageInnerRadius;}
+	float GetRadialDamageOuterRadius() const {return RadialDamageOuterRadius;}
+	FVector GetRadialDamageOrigin() const {return RadialDamageOrigin;}
+	
 	void SetIsSuccessfulDebuff(bool bInDebuff) { bIsSuccessfulDebuff = bInDebuff;}
 	void SetIsDebuffDamage(float bInDamage) { DebuffDamage = bInDamage;}
 	void SetDebuffDuration(float bInDuration) { DebuffDuration = bInDuration;}
@@ -89,6 +107,12 @@ public:
 	void SetIsBlockHit(const bool bInIsBlockHit) { bIsBlockHit = bInIsBlockHit; }
 	void SetDeathImpulse(const FVector& InDeathImpulse) { DeathImpulse = InDeathImpulse; }
 	void SetKnockBackForce(const FVector& InKnockBackForce) {KnockBackForce = InKnockBackForce;}
+
+	void SetIsRadialDamage(const bool bInIsRadial) { bIsRadialDamage = bInIsRadial; }
+	void SetRadialDamageInnerRadius(const float InInnerRadius) { RadialDamageInnerRadius = InInnerRadius; }
+	void SetRadialDamageOuterRadius(const float InOuterRadius) { RadialDamageOuterRadius = InOuterRadius; }
+	void SetRadialDamageOrigin(const FVector& InDamageOrigin) { RadialDamageOrigin = InDamageOrigin; }
+	
 	/** Creates a copy of this context, used to duplicate for later modifications */
 	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
@@ -138,6 +162,18 @@ protected:
 
 	UPROPERTY()
 	FVector KnockBackForce = FVector::ZeroVector ;
+
+	UPROPERTY()
+	bool bIsRadialDamage = false;
+
+	UPROPERTY()
+	float RadialDamageInnerRadius = 0.f;
+
+	UPROPERTY()
+	float RadialDamageOuterRadius = 0.f;
+
+	UPROPERTY()
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 template<>
