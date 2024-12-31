@@ -85,6 +85,7 @@ public:
  FGameplayTag Abilities_Status_None;
  
  FGameplayTag Abilities_Fire_FireBolt;
+ FGameplayTag Abilities_Fire_FireBlast;
  
  FGameplayTag Abilities_Lightning_Electrocute;
 

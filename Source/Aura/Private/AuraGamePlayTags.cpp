@@ -84,7 +84,7 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	
 	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Damage.Fire"), FString("Fire Damage Type"));
-
+	
 	GameplayTags.Damage_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Damage.Lightning"), FString("Lightning  Damage Type"));
 
@@ -199,12 +199,12 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_Summon= UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Summon"), FString("Summon"));
 	
-	GameplayTags.Abilities_Fire_FireBolt= UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBolt"),FString("FireBoldt"));
 
-	GameplayTags.Cooldown_Fire_FireBolt= UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Cooldown.Fire.FireBolt"),FString("Cooldown FireBolt"));
-
+	GameplayTags.Abilities_Fire_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("Abilities.Fire.FireBlast"),FString("FireBlast"));
+	
 	GameplayTags.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Lightning.Electrocute"),FString("Electrocute"));
 
