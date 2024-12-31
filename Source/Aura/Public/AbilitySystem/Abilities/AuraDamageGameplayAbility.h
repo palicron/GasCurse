@@ -21,7 +21,7 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION(BlueprintPure)
-	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
+	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr,FVector InRadialDamageOrigin = FVector::ZeroVector) const;
 
 	
 	UFUNCTION(BlueprintPure)
@@ -61,15 +61,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	bool bIsRadialDamage = false;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RadialDamageInnerRadius = 0.f;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float RadialDamageOuterRadius = 0.f;
 
-	UPROPERTY(EditDefaultsOnly)
-	FVector RadialDamageOrigin = FVector::ZeroVector;
-	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTagMontageFromArray(const TArray<FTaggedMontage>& TaggedMontages) const;
 	

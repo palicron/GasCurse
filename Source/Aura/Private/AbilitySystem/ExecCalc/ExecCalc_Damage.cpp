@@ -136,6 +136,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key,false);
 
+		if (DamageTypeValue <= 0.f)
+		{
+			continue;
+		}
+		
 		DamageTypeValue *= (100.f - Resistance)/100.f;
 
 		if (UAuraAbilitySystemLibrary::IsRadialDamage(EffectContextHandel))
@@ -153,7 +158,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 				1.f,UDamageType::StaticClass(),TArray<AActor*>(),SourceAvatar,nullptr);
 		}
 		Damage += DamageTypeValue;
-
 		
 	}
 
