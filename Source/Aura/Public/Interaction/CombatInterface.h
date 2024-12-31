@@ -8,11 +8,14 @@
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
+
 class UNiagaraSystem;
 class UAnimMontage;
 
+
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnASCRegisteredSignature, UAbilitySystemComponent*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature,AActor*,DeadActor);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnDamageSignature, const float /* Damage */);
 
 USTRUCT(BlueprintType)
 struct FTaggedMontage
@@ -91,6 +94,8 @@ public:
 
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 
+	virtual FOnDamageSignature& GetOnDamageDelegate() = 0;
+	
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void SetInShockLoop(const bool bInLoop);
 
@@ -102,4 +107,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	void SetIsBeingShocked(bool bInShock);
+
+	
 };

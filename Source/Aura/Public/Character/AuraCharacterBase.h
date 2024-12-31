@@ -17,6 +17,7 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 class UAnimMontage;
 
+
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
@@ -40,7 +41,8 @@ public:
 
 	UFUNCTION(NetMulticast,Reliable)
 	virtual void MultiCastHandleDeath(const FVector& DeathImpulse);
-	
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	/**Combat Interface*/
 	virtual bool IsDead_Implementation() const override;
@@ -59,8 +61,12 @@ public:
 	FOnASCRegisteredSignature OnASCRegisterRegister;
 	UPROPERTY(BlueprintAssignable)
 	FOnDeathSignature OnDeathDelegate;
+	virtual  FOnDamageSignature& GetOnDamageDelegate() override;
+	
 	/**Combat Interface*/
 
+	FOnDamageSignature FOnDamageDelegate;
+	
     UPROPERTY(ReplicatedUsing = OnRep_IsStunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 

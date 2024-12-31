@@ -10,6 +10,7 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 struct AuraDamageStatics
 {
@@ -87,11 +88,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
-	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
-	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
+	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 
 	int32 SourcePlayerLevel = 1;
 	int32 TargetPlayerLevel = 1;
+
 	
 	if(SourceAvatar->Implements<UCombatInterface>())
 	{
@@ -113,7 +115,8 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParams.SourceTags = SourceTags;
 	EvaluationParams.TargetTags = TargetTags;
 
-
+	FGameplayEffectContextHandle EffectContextHandel =  Spec.GetContext();
+	
 	//Debuff
 
 	DetermineDebuff(ExecutionParams, Spec, EvaluationParams,TagToCapturesDef);
@@ -134,7 +137,24 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key,false);
 
 		DamageTypeValue *= (100.f - Resistance)/100.f;
+
+		if (UAuraAbilitySystemLibrary::IsRadialDamage(EffectContextHandel))
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetAvatar))
+			{
+				CombatInterface->GetOnDamageDelegate().AddLambda([&](float Damage)
+				{
+					DamageTypeValue = Damage;
+				});
+			}
+
+			UGameplayStatics::ApplyRadialDamageWithFalloff(TargetAvatar,DamageTypeValue,0.f,UAuraAbilitySystemLibrary::GetRadiusDamageOrigen(EffectContextHandel)
+				,UAuraAbilitySystemLibrary::GetRadialDamageInnerRadius(EffectContextHandel),UAuraAbilitySystemLibrary::GetRadialDamageOutterRadius(EffectContextHandel),
+				1.f,UDamageType::StaticClass(),TArray<AActor*>(),SourceAvatar,nullptr);
+		}
 		Damage += DamageTypeValue;
+
+		
 	}
 
 	//Capture BlockChange on Taget, and determine if there was a succesful Block
@@ -169,7 +189,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const float EffectiveArmor = TargetArmor *= (100.f - SourceArmorPenetration * ArmorPenCoefficient) / 100.f;
 	Damage *= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100;
 
-	FGameplayEffectContextHandle EffectContextHandel =  Spec.GetContext();
+
 	UAuraAbilitySystemLibrary::SetIsBlockedHit(EffectContextHandel,bBlocked);
 	//Critical
 

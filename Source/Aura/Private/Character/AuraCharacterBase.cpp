@@ -162,6 +162,13 @@ void AAuraCharacterBase::Die(const FVector& DeathImpulse)
 	MultiCastHandleDeath(DeathImpulse);
 }
 
+float AAuraCharacterBase::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	const float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	FOnDamageDelegate.Broadcast(DamageTaken);
+	return DamageTaken;
+}
+
 bool AAuraCharacterBase::IsDead_Implementation() const
 {
 	return bDead;
@@ -262,6 +269,11 @@ bool AAuraCharacterBase::IsBeingShocked_Implementation() const
 void AAuraCharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
 {
 	bIsBeingShocked = bInShock;
+}
+
+FOnDamageSignature& AAuraCharacterBase::GetOnDamageDelegate()
+{
+	return FOnDamageDelegate;
 }
 
 void AAuraCharacterBase::StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount)
