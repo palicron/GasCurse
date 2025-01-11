@@ -44,9 +44,7 @@ void AAuraProjectile::BeginPlay()
 	LoopingSoundComponent = UGameplayStatics::SpawnSoundAttached(LoopingSound, GetRootComponent());
 }
 
-void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                      const FHitResult& SweepResult)
+bool AAuraProjectile::IsValidOverlap(AActor* OtherActor)
 {
 	AActor* SourceAvatarActor = nullptr;
 	if(DamageEffectParams.SourceAbilitySystemComponent)
@@ -57,10 +55,21 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	
 	if(!SourceAvatarActor || SourceAvatarActor == OtherActor)
 	{
-		return;
+		return true;
 	}
 	
 	if(!UAuraAbilitySystemLibrary::IsNotFriend(SourceAvatarActor,OtherActor))
+	{
+		return true;
+	}
+	return false;
+}
+
+void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                      const FHitResult& SweepResult)
+{
+	if (IsValidOverlap(OtherActor))
 	{
 		return;
 	}
