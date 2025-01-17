@@ -509,3 +509,21 @@ TArray<FVector> UAuraAbilitySystemLibrary::EvenlyRotateVectors(const FVector& Fo
 	Rotators.Add(Forward);
 	return Rotators;
 }
+
+void UAuraAbilitySystemLibrary::SetIsRadialDamageEffectParam(FDamageEffectParams& DamageEffectParams, bool bIsRadial, float InnerRadius, float OuterRadius, FVector Origin)
+{
+	DamageEffectParams.bIsRadialDamage = bIsRadial;
+	DamageEffectParams.RadialDamageInnerRadius = InnerRadius;
+	DamageEffectParams.RadialDamageOuterRadius = OuterRadius;
+	DamageEffectParams.RadialDamageOrigin = Origin;
+}
+
+void UAuraAbilitySystemLibrary::SetKnockbackDirection(FDamageEffectParams& DamageEffectParams, FVector KnockBackDirection, float Magnitude)
+{
+	DamageEffectParams.KnockBackForce = KnockBackDirection.GetSafeNormal() * (Magnitude == 0.f ? DamageEffectParams.KnockBackForceMagnitude : Magnitude);
+}
+
+void UAuraAbilitySystemLibrary::SetDeathInpulsDirection(FDamageEffectParams& DamageEffectParams, FVector InpulseDirection, float Magnitude)
+{
+	DamageEffectParams.DeathImpulse = InpulseDirection.GetSafeNormal() * (Magnitude == 0.f ? DamageEffectParams.DeathImpulseMagnitude : Magnitude);
+}

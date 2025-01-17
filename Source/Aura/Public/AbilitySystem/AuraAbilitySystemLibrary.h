@@ -152,6 +152,20 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="AuraAbilitySytemLibrary|Math")
 	static TArray<FVector> EvenlyRotateVectors(const FVector& Forward, const FVector& Axis, const float Spread, const int32 NumVectors);
+
+
+	/**
+	 *
+	 * Damage effect params
+	 */
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	static void SetIsRadialDamageEffectParam(UPARAM(ref) FDamageEffectParams& DamageEffectParams, bool bIsRadial, float InnerRadius, float OuterRadius, FVector Origin);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	static void SetKnockbackDirection(UPARAM(ref) FDamageEffectParams& DamageEffectParams, FVector KnockBackDirection, float Magnitude = 0.f);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	static void SetDeathInpulsDirection(UPARAM(ref) FDamageEffectParams& DamageEffectParams, FVector InpulseDirection, float Magnitude = 0.f);
 };
 
 
