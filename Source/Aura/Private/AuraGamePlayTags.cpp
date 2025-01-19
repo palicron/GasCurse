@@ -271,5 +271,9 @@ void FAuraGamePlayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
 	FName("Abilities.Passive.HaloOfProtection"),FString("HaloOfProtection"));
+
+
+	GameplayTags.GameplayCue_FireBlast = UGameplayTagsManager::Get().AddNativeGameplayTag(
+	FName("GameplayCue.FireBlast"),FString("FireBlast GamePlay gue tag"));
 }
 
