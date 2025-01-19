@@ -527,3 +527,8 @@ void UAuraAbilitySystemLibrary::SetDeathInpulsDirection(FDamageEffectParams& Dam
 {
 	DamageEffectParams.DeathImpulse = InpulseDirection.GetSafeNormal() * (Magnitude == 0.f ? DamageEffectParams.DeathImpulseMagnitude : Magnitude);
 }
+
+void UAuraAbilitySystemLibrary::SetEffectParamASC(FDamageEffectParams& DamageEffectParams, UAbilitySystemComponent* InASC)
+{
+	DamageEffectParams.TargetAbilitySystemComponent = InASC;
+}

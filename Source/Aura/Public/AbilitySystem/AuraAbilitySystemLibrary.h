@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "AuraAbilityTypes.h"
 #include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
@@ -166,6 +167,10 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
 	static void SetDeathInpulsDirection(UPARAM(ref) FDamageEffectParams& DamageEffectParams, FVector InpulseDirection, float Magnitude = 0.f);
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	static void SetEffectParamASC(UPARAM(ref) FDamageEffectParams& DamageEffectParams,UAbilitySystemComponent* InASC);
+
 };
 
 
