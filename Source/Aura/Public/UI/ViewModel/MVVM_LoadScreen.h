@@ -24,6 +24,16 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	UMVVM_LoadSlot* GetLoadSlotViewModelByIndex(const int32 Index) const;
+
+	UFUNCTION(BlueprintCallable)
+	void NewGameButtonPressed(const int32 Slot);
+	
+	UFUNCTION(BlueprintCallable)
+	void NewSlotButtonPressed(const int32 Slot,const FString& EnteredName);
+
+	UFUNCTION(BlueprintCallable)
+	void SelectSlotButtonPressed(const int32 Slot);
+	
 private:
 
 	UPROPERTY()
