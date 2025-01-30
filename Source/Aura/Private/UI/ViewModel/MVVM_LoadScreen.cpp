@@ -40,10 +40,12 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(const int32 Slot, const FString& Ent
 	{
 		return;
 	}
-
-	LoadSlots[Slot]->PlayerName = EnteredName;
-
+	
+	LoadSlots[Slot]->SetPlayerName(EnteredName);
+	
 	AuraGameModeBase->SaveSlotData(LoadSlots[Slot],Slot);
+
+	LoadSlots[Slot]->InitializeSlot();
 }
 
 void UMVVM_LoadScreen::SelectSlotButtonPressed(const int32 Slot)

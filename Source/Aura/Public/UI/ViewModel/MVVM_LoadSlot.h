@@ -27,7 +27,14 @@ public:
 
 	UPROPERTY()
 	FString SlotIndex;
-	
-	UPROPERTY()
+
+
+	//**field Notfies**/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
 	FString PlayerName;
+
+
+	void SetPlayerName(FString InPlayerName);
+
+	FString GetPlayerName() const { return PlayerName; };
 };
