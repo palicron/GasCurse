@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MVVMViewModelBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "MVVM_LoadSlot.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSetWidgetSwitcherIndexSignature, const int32 ,WidgetSwitcherIndex);
@@ -34,6 +35,8 @@ public:
 
 	FString GetLoadSlotName() const { return LoadSlotName; };
 
+	UPROPERTY()
+	TEnumAsByte<ESaveLoadStatus> LoadSlotStatus;
 protected:
 
 	//**field Notfies**/
