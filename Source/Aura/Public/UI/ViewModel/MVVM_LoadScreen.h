@@ -10,6 +10,8 @@ class UMVVM_LoadSlot;
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSlotSelectedSignature);
 UCLASS()
 class AURA_API UMVVM_LoadScreen : public UMVVMViewModelBase
 {
@@ -17,6 +19,9 @@ class AURA_API UMVVM_LoadScreen : public UMVVMViewModelBase
 
 public:
 
+	UPROPERTY(BlueprintAssignable)
+	FSlotSelectedSignature SlotSelectedDelegate;
+	
 	void InitializeLoadSlots();
 	
 	UPROPERTY(EditDefaultsOnly)
