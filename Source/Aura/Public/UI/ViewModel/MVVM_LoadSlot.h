@@ -29,7 +29,7 @@ public:
 
 
 	UPROPERTY()
-	FString SlotIndex;
+	int32 SlotIndex;
 	
 	void SetPlayerName(FString InPlayerName);
 

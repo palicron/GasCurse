@@ -27,6 +27,7 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category="Ability Info")
 	TObjectPtr<UAbilityInfo> AbilityInfo;
 
+	void DeleteSlot(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 
 	UPROPERTY(EditDefaultsOnly,Category="SaveSlot")
