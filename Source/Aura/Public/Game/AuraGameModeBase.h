@@ -38,7 +38,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category="Maps")
 	FString StartingMapName;
-
+	
+	UPROPERTY(EditDefaultsOnly,Category="Maps")
+	FName DefaultPlayerStartTag;
+	
 	UPROPERTY(EditDefaultsOnly,Category="Maps")
 	TSoftObjectPtr<UWorld> StartingMap;
 	
