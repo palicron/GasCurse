@@ -37,3 +37,9 @@ ULoadScreenSaveGame* AAuraGameModeBase::GetSaveSlotData(const FString& SlotName,
 	USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(SlotName, SlotIndex);
 	return Cast<ULoadScreenSaveGame>(SaveGameObject);
 }
+
+void AAuraGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+	Maps.Add(StartingMapName,StartingMap);
+}

@@ -35,4 +35,16 @@ public:
 	
 	UFUNCTION()
 	ULoadScreenSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex) const;
+
+	UPROPERTY(EditDefaultsOnly,Category="Maps")
+	FString StartingMapName;
+
+	UPROPERTY(EditDefaultsOnly,Category="Maps")
+	TSoftObjectPtr<UWorld> StartingMap;
+	
+	UPROPERTY(EditDefaultsOnly,Category="Maps")
+	TMap<FString,TSoftObjectPtr<UWorld>> Maps;
+
+protected:
+	virtual void BeginPlay() override;
 };

@@ -39,8 +39,13 @@ public:
 
 	FString GetLoadSlotName() const { return LoadSlotName; };
 
+	void SetMapName(FString InMapName);
+
+	FString GetMapName() const { return MapName; };
+
 	UPROPERTY()
 	TEnumAsByte<ESaveLoadStatus> LoadSlotStatus;
+	
 protected:
 
 	//**field Notfies**/
@@ -49,5 +54,8 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
 	FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
+	FString MapName;
 
 };
