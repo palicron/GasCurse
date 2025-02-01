@@ -47,6 +47,8 @@ public:
 
 	void TravelToMap(UMVVM_LoadSlot* Slot);
 
+	
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 protected:
 	virtual void BeginPlay() override;
 };
