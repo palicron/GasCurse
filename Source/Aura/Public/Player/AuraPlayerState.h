@@ -56,6 +56,10 @@ public:
 
 	void AddToSpellPoints(int32 InPoints);
 
+	void SetAttributePoint(const int32 InPoints);
+
+	void SetSpellPoint(const int32 InPoints);
+	
 	UFUNCTION(BlueprintCallable)
 	int32 GetAttributePoints() const {return AttributePoints;}
 

@@ -82,4 +82,6 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLevelUpParticles() const;
+
+	void LoadProgress();
 };

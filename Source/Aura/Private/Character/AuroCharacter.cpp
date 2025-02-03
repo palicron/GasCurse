@@ -194,6 +194,8 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+	LoadProgress();
+	
 	AddCharacterAbilities();
 }
 
@@ -223,11 +225,50 @@ void AAuraCharacter::InitAbilityActorInfo()
 		 }
 	}
 
-	if(HasAuthority())
+
+}
+
+void AAuraCharacter::LoadProgress()
+{
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	
+	if (!AuraGameModeBase)
+	{
+		return;
+	}
+	
+	ULoadScreenSaveGame* SaveData =  AuraGameModeBase->RetrieveInGameSaveData();
+
+	if (!SaveData)
+	{
+		return;
+	}
+
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	if (!AuraPlayerState)
+	{
+		return;
+	}
+
+	AuraPlayerState->SetLevel(SaveData->PlayerLevel);
+	AuraPlayerState->SetXP(SaveData->PlayerXP);
+	AuraPlayerState->SetAttributePoint(SaveData->AttributePoints);
+	AuraPlayerState->SetSpellPoint(SaveData->SpellPoints);
+
+	if (SaveData->bFirstTimeLoadIn)
 	{
 		InitializeDefaultAttributes();
+		AddCharacterAbilities();
 	}
+	else
+	{
+		
+	}
+
+	
+	
 }
+
 
 
 void AAuraCharacter::ShowMagicCircle_Implementation(UMaterialInterface* DecalInterface)
@@ -277,6 +318,7 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
 	SaveData->PlayerXP = AuraPlayerState->GetPlayerXP();
 	SaveData->AttributePoints = AuraPlayerState->GetAttributePoints();
 	SaveData->SpellPoints = AuraPlayerState->GetSpellPoints();
+	SaveData->bFirstTimeLoadIn = false;
 
 	SaveData->Strength = UAuraAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
