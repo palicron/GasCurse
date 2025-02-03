@@ -30,6 +30,9 @@ public:
 
 	UPROPERTY()
 	int32 SlotIndex;
+
+	UPROPERTY()
+	FName PlayerStartTag;
 	
 	void SetPlayerName(FString InPlayerName);
 
@@ -57,5 +60,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
 	FString MapName;
+	
 
 };

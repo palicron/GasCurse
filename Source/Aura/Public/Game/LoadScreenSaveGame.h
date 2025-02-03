@@ -39,4 +39,7 @@ public:
 
 	UPROPERTY()
 	TEnumAsByte<ESaveLoadStatus> SaveSlotStatus = Vacant;
+
+	UPROPERTY()
+	FName PlayerStartTag;
 };
