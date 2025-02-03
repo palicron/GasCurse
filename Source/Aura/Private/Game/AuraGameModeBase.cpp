@@ -84,6 +84,28 @@ AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 	return PlayerInitStart;
 }
 
+ULoadScreenSaveGame* AAuraGameModeBase::RetrieveInGameSaveData() const
+{
+	const UAuraGameInstance* AuraGameInstance	= Cast<UAuraGameInstance>(GetGameInstance());
+
+	const FString InGameSlotName = AuraGameInstance->LoadSlot;
+	const int32 InGameSlotIndex = AuraGameInstance->LoadSlotIndex;
+
+	return GetSaveSlotData(InGameSlotName, InGameSlotIndex);
+}
+
+void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
+{
+	UAuraGameInstance* AuraGameInstance	= Cast<UAuraGameInstance>(GetGameInstance());
+	
+	const FString InGameSlotName = AuraGameInstance->LoadSlot;
+	const int32 InGameSlotIndex = AuraGameInstance->LoadSlotIndex;
+
+	AuraGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+	
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameSlotName, InGameSlotIndex);
+}
+
 void AAuraGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();

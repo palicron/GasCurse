@@ -97,6 +97,8 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 		return;
 	}
 	AuraGameInstance->PlayerStartTag = LoadSlots[CurrentSlot]->PlayerStartTag;
+	AuraGameInstance->LoadSlot = LoadSlots[CurrentSlot]->GetLoadSlotName();
+	AuraGameInstance->LoadSlotIndex = LoadSlots[CurrentSlot]->SlotIndex;
 	AuraGameModeBase->TravelToMap(LoadSlots[CurrentSlot]);
 }
 

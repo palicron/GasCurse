@@ -49,9 +49,12 @@ public:
 	TMap<FString,TSoftObjectPtr<UWorld>> Maps;
 
 	void TravelToMap(UMVVM_LoadSlot* Slot);
-
 	
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+
+	ULoadScreenSaveGame* RetrieveInGameSaveData() const;
+
+	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 protected:
 	virtual void BeginPlay() override;
 };
