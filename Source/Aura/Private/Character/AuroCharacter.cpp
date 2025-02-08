@@ -12,6 +12,7 @@
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/AuraGameModeBase.h"
@@ -291,6 +292,11 @@ void AAuraCharacter::HideMagicCircle_Implementation()
 
 void AAuraCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
 {
+	if (!HasAuthority())
+	{
+		return;
+	}
+	
 	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	
 	if (!AuraGameModeBase)
@@ -324,7 +330,29 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckPointTag)
 	SaveData->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Resilience = UAuraAttributeSet::GetResilienceAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Vigor = UAuraAttributeSet::GetVigorAttribute().GetNumericValue(GetAttributeSet());
+
+
+	FForEachAbility SaveAbilityDelegate;
+	UAuraAbilitySystemComponent* AuraAC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+	SaveAbilityDelegate.BindLambda([&](const FGameplayAbilitySpec& spec)
+	{
+
+		FSaveAbility Ability;
+		const FGameplayTag AbilityTag = AuraAC->GetAbilityTagFromSpec(spec);
+		UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(this);
+		FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+
+		Ability.GameplayAbility = Info.Ability;
+		Ability.AbilityLevel = spec.Level;
+		Ability.AbilitySlot = AuraAC->GetSlotFromAbilityTag(AbilityTag);
+		Ability.StatusAbilityTag = AuraAC->GetStatusFromAbilityTag(AbilityTag);
+		Ability.AbilityTag = AbilityTag;
+		Ability.AbilityType = Info.AbilityType;
+		
+		SaveData->SaveAbilities.Add(Ability);
+	});
 	
+	AuraAC->ForEachAbility(SaveAbilityDelegate);
 	
 	AuraGameModeBase->SaveInGameProgressData(SaveData);
 }
