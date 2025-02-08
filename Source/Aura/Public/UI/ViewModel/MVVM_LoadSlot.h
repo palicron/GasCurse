@@ -46,6 +46,10 @@ public:
 
 	FString GetMapName() const { return MapName; };
 
+	void SetPlayerLevel(int32 InLevel);
+
+	int32 GetPlayerLevel() const { return PlayerLevel; };
+	
 	UPROPERTY()
 	TEnumAsByte<ESaveLoadStatus> LoadSlotStatus;
 	
@@ -61,5 +65,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
 	FString MapName;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter)
+	int32 PlayerLevel;
+
 
 };
