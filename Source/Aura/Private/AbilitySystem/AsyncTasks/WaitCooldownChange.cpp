@@ -71,7 +71,6 @@ void UWaitCooldownChange::OnActiveEffectAdded(UAbilitySystemComponent* TargetAsc
 				}
 					
 			}
-		
 			CoolDownStart.Broadcast(HighestTime);
 		}
 		

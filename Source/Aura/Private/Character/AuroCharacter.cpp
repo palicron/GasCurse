@@ -10,6 +10,7 @@
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Game/AuraGameInstance.h"
@@ -250,10 +251,6 @@ void AAuraCharacter::LoadProgress()
 		return;
 	}
 
-	AuraPlayerState->SetLevel(SaveData->PlayerLevel);
-	AuraPlayerState->SetXP(SaveData->PlayerXP);
-	AuraPlayerState->SetAttributePoint(SaveData->AttributePoints);
-	AuraPlayerState->SetSpellPoint(SaveData->SpellPoints);
 
 	if (SaveData->bFirstTimeLoadIn)
 	{
@@ -262,10 +259,13 @@ void AAuraCharacter::LoadProgress()
 	}
 	else
 	{
-		
-	}
+		AuraPlayerState->SetLevel(SaveData->PlayerLevel);
+		AuraPlayerState->SetXP(SaveData->PlayerXP);
+		AuraPlayerState->SetAttributePoint(SaveData->AttributePoints);
+		AuraPlayerState->SetSpellPoint(SaveData->SpellPoints);
 
-	
+		UAuraAbilitySystemLibrary::InitializeDefaultAttributesFromSaveData(this,AbilitySystemComponent,SaveData);
+	}
 	
 }
 

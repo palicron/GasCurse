@@ -12,6 +12,7 @@ class UAttributeSet;
 class UAuraAbilitySystemComponent;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FAuraOnStateChangeSignature,int32 /*StateValue*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FAuraLevelChangeSignature,int32 /*StateValue*/,bool /*Load from disk*/);
 /**
  * 
  */
@@ -33,7 +34,7 @@ public:
 	
 	FAuraOnStateChangeSignature OnXpChangeDelegate;
 
-	FAuraOnStateChangeSignature OnLevelChangeDelegate;
+	FAuraLevelChangeSignature OnLevelChangeDelegate;
 
 	FAuraOnStateChangeSignature OnAttributePointChangeDelegate;
 
