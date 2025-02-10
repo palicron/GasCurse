@@ -46,6 +46,45 @@ struct FSaveAbility
 		return AbilityTag.MatchesTagExact(In.AbilityType);
 	}
 };
+
+USTRUCT(BlueprintType)
+struct FSaveActor
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName = NAME_None;
+
+	UPROPERTY()
+	FTransform ActorTransform = FTransform();
+
+	// Serilize Variable From the AActor - Only mar whit SaveGame Specifier
+	UPROPERTY()
+	TArray<uint8> Bytes;
+
+	bool operator==(const FSaveActor& InActor) const
+	{
+		return  ActorName == InActor.ActorName;
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FSaveMap
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName = "";
+
+	UPROPERTY()
+	TArray<FSaveActor> Actors;
+
+	bool operator==(const FSaveMap& InLevel) const
+	{
+		return MapAssetName == InLevel.MapAssetName;
+	}
+	
+};
 /**
  * 
  */
@@ -108,5 +147,12 @@ public:
 
 	UPROPERTY()
 	TArray<FSaveAbility> SaveAbilities;
-	
+
+	UPROPERTY()
+	TArray<FSaveMap> SaveMap;
+
+
+	FSaveMap GetSaveMapWhitMapName(const FString& InMapName);
+
+	bool HasMap(const FString& InMapName);
 };
