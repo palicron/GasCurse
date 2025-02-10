@@ -9,6 +9,7 @@
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "Aura/AuraLogChannels.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "Interaction/PlayerInterface.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
@@ -39,7 +40,39 @@ void UAuraAbilitySystemComponent::AddCharacterPassiveAbilities(const TArray<TSub
 	for (const TSubclassOf<UGameplayAbility>& AbilityClass : StartupPassiveAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		AbilitySpec.DynamicAbilityTags.AddTag(FAuraGamePlayTags::Get().Abilities_Status_Equipped);
 		GiveAbilityAndActivateOnce(AbilitySpec);
+
+	}
+}
+
+void UAuraAbilitySystemComponent::AddCharacterAbilitiesFromSaveData(ULoadScreenSaveGame* SaveData)
+{
+	for (const FSaveAbility& Data : SaveData->SaveAbilities)
+	{
+		const TSubclassOf<UGameplayAbility> LoadedAbilityClass = Data.GameplayAbility;
+
+		FGameplayAbilitySpec LoadedAbilitySpec = FGameplayAbilitySpec(LoadedAbilityClass, Data.AbilityLevel);
+
+		LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.AbilitySlot);
+		LoadedAbilitySpec.DynamicAbilityTags.AddTag(Data.StatusAbilityTag);
+		
+		if (Data.AbilityType == FAuraGamePlayTags::Get().Abilities_Status_Offensive)
+		{
+
+			GiveAbility(LoadedAbilitySpec);
+		}
+		else if (Data.AbilityType == FAuraGamePlayTags::Get().Abilities_Status_Passive)
+		{
+			if (Data.StatusAbilityTag.MatchesTagExact(FAuraGamePlayTags::Get().Abilities_Status_Equipped))
+			{
+				GiveAbilityAndActivateOnce(LoadedAbilitySpec);
+			}
+			GiveAbility(LoadedAbilitySpec);
+		}
+
+		bStartupAbilitiesGiven = true;
+		AbilitiesGivenDelegate.Broadcast();
 	}
 }
 
@@ -333,6 +366,8 @@ void UAuraAbilitySystemComponent::Server_EquipAbility_Implementation(const FGame
 				Multicast_ActivatePassiveEffect(GetAbilityTagFromSpec(*AbilitySpec),true);
 				TryActivateAbility(AbilitySpec->Handle);
 			}
+			AbilitySpec->DynamicAbilityTags.RemoveTag(GetStatusFromSpec(*AbilitySpec));
+			AbilitySpec->DynamicAbilityTags.AddTag(FAuraGamePlayTags::Get().Abilities_Status_Equipped);
 		}
 		AssignSlotToAbility(*AbilitySpec,SlotTag);
 		

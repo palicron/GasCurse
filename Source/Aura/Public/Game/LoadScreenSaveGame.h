@@ -38,9 +38,13 @@ struct FSaveAbility
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SaveGame")
 	FGameplayTag AbilityType = FGameplayTag();
 
-	
+
 	int32 AbilityLevel = 1;
-	
+
+	bool operator==(const FSaveAbility& In) const
+	{
+		return AbilityTag.MatchesTagExact(In.AbilityType);
+	}
 };
 /**
  * 

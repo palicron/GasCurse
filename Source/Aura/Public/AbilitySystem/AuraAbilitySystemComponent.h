@@ -3,6 +3,7 @@
 #pragma once
 #include "GameplayTagContainer.h"
 
+class ULoadScreenSaveGame;
 struct FGameplayAbilitySpec;
 class UAuraAbilitySystemComponent;
 
@@ -48,6 +49,8 @@ public:
 
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>> StartupPassiveAbilities);
 
+	void AddCharacterAbilitiesFromSaveData(ULoadScreenSaveGame* SaveData);
+	
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 	
 	void AbilityInputTagHeld(const FGameplayTag& InputTag);
