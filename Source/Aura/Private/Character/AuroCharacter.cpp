@@ -2,7 +2,7 @@
 
 
 #include "Character/AuroCharacter.h"
-#include "Character/AuroCharacter.h"
+
 
 #include "AbilitySystemComponent.h"
 #include "AuraGamePlayTags.h"
@@ -14,7 +14,6 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
-#include "Game/AuraGameInstance.h"
 #include "Game/AuraGameModeBase.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -196,9 +195,11 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitAbilityActorInfo();
+	if (AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(GetWorld())))
+	{
+		AuraGM->LoadWorldState(GetWorld());
+	}
 	LoadProgress();
-	
-	AddCharacterAbilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()

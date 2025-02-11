@@ -4,6 +4,7 @@
 #include "Game/AuraGameModeBase.h"
 
 #include "EngineUtils.h"
+#include "Aura/AuraLogChannels.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
@@ -110,7 +111,7 @@ void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameSlotName, InGameSlotIndex);
 }
 
-void AAuraGameModeBase::SaveWorldState(UWorld* World)
+void AAuraGameModeBase::SaveWorldState(UWorld* World) const
 {
 	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
@@ -137,17 +138,17 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World)
 				continue;
 			}
 
-			FSaveActor SaveActor;
-			SaveActor.ActorName = Actor->GetFName();
-			SaveActor.ActorTransform = Actor->GetActorTransform();
+			FSaveActor SevedACtor;
+			SevedACtor.ActorName = Actor->GetFName();
+			SevedACtor.ActorTransform = Actor->GetActorTransform();
 
-			FMemoryWriter MemoryWriter(SaveActor.Bytes);
+			FMemoryWriter MemoryWriter(SevedACtor.Bytes);
 
 			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter,true);
 			Archive.ArIsSaveGame = true;
 			Actor->Serialize(Archive);
 
-			SaveMap.Actors.AddUnique(SaveActor);
+			SaveMap.Actors.Add(SevedACtor);
 		}
 
 		for (FSaveMap& MapToReplace : SaveGame->SaveMap)
@@ -159,6 +160,52 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World)
 		}
 
 		UGameplayStatics::SaveGameToSlot(SaveGame,AuraGI->LoadSlot, AuraGI->LoadSlotIndex);
+	}
+}
+
+void AAuraGameModeBase::LoadWorldState(UWorld* World) const
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UAuraGameInstance* AuraGI = Cast<UAuraGameInstance>(GetGameInstance());
+	
+	if (UGameplayStatics::DoesSaveGameExist(AuraGI->LoadSlot, AuraGI->LoadSlotIndex))
+	{
+		ULoadScreenSaveGame* SaveGame = Cast<ULoadScreenSaveGame>(UGameplayStatics::LoadGameFromSlot(AuraGI->LoadSlot,AuraGI->LoadSlotIndex));
+		if (!SaveGame)
+		{
+			UE_LOG(LogAura,Error,TEXT("AAuraGameModeBase::LoadWorldState"));
+			return;
+		}
+		
+		for (FActorIterator It(World);It; ++It)
+		{
+			AActor* Actor = *It;
+			if (!Actor->Implements<USaveInterface>())
+			{
+				continue;
+			}
+
+			for (FSaveActor SaveActor : SaveGame->GetSaveMapWhitMapName(WorldName).Actors)
+			{
+				if (SaveActor.ActorName == Actor->GetFName())
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+					{
+						Actor->SetActorTransform(SaveActor.ActorTransform);
+					}
+
+					FMemoryReader  FMemoryReader(SaveActor.Bytes);
+					FObjectAndNameAsStringProxyArchive Archive(FMemoryReader,true);
+					Archive.ArIsSaveGame = true;
+
+					Actor->Serialize(Archive);
+
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
 	}
 }
 
