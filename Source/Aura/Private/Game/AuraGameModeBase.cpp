@@ -3,10 +3,13 @@
 
 #include "Game/AuraGameModeBase.h"
 
+#include "EngineUtils.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void AAuraGameModeBase::DeleteSlot(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -105,6 +108,58 @@ void AAuraGameModeBase::SaveInGameProgressData(ULoadScreenSaveGame* SaveObject)
 	AuraGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
 	SaveObject->bFirstTimeLoadIn = false;
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameSlotName, InGameSlotIndex);
+}
+
+void AAuraGameModeBase::SaveWorldState(UWorld* World)
+{
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UAuraGameInstance* AuraGI = Cast<UAuraGameInstance>(GetGameInstance());
+
+	if (ULoadScreenSaveGame* SaveGame = GetSaveSlotData(AuraGI->LoadSlot, AuraGI->LoadSlotIndex))
+	{
+		if (!SaveGame->HasMap(WorldName))
+		{
+			FSaveMap NewSaveMap;
+			NewSaveMap.MapAssetName = WorldName;
+			SaveGame->SaveMap.Add(NewSaveMap);
+		}
+
+		FSaveMap SaveMap = SaveGame->GetSaveMapWhitMapName(WorldName);
+		SaveMap.Actors.Empty();
+	
+		for (FActorIterator It(World);It; ++It)
+		{
+			AActor* Actor = *It;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>())
+			{
+				continue;
+			}
+
+			FSaveActor SaveActor;
+			SaveActor.ActorName = Actor->GetFName();
+			SaveActor.ActorTransform = Actor->GetActorTransform();
+
+			FMemoryWriter MemoryWriter(SaveActor.Bytes);
+
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter,true);
+			Archive.ArIsSaveGame = true;
+			Actor->Serialize(Archive);
+
+			SaveMap.Actors.AddUnique(SaveActor);
+		}
+
+		for (FSaveMap& MapToReplace : SaveGame->SaveMap)
+		{
+			if (MapToReplace.MapAssetName == WorldName )
+			{
+				MapToReplace = SaveMap;
+			}
+		}
+
+		UGameplayStatics::SaveGameToSlot(SaveGame,AuraGI->LoadSlot, AuraGI->LoadSlotIndex);
+	}
 }
 
 void AAuraGameModeBase::BeginPlay()

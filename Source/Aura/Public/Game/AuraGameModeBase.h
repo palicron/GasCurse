@@ -55,6 +55,8 @@ public:
 	ULoadScreenSaveGame* RetrieveInGameSaveData() const;
 
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
+
+	void SaveWorldState(UWorld* World);
 protected:
 	virtual void BeginPlay() override;
 };
