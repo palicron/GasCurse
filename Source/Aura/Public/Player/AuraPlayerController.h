@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class IHighlightInterface;
 class AMagicCircle;
 class UNiagaraSystem;
 class UDamageTextComponent;
@@ -81,8 +82,8 @@ private:
 
 	FHitResult CursorHit;
 
-	IIEnemyInterface* LastActor;
-	IIEnemyInterface* ThisActor;
+	IHighlightInterface* LastActor;
+	IHighlightInterface* ThisActor;
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 

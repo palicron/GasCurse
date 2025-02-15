@@ -17,6 +17,7 @@
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
+#include "Interaction/HighlightInterface.h"
 #include "Interaction/IEnemyInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
 
@@ -156,7 +157,7 @@ void AAuraPlayerController::CursorTrace()
 		return;
 
 	LastActor = ThisActor;
-	ThisActor = Cast<IIEnemyInterface>(CursorHit.GetActor());
+	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
 
 	if (LastActor != ThisActor)
 	{

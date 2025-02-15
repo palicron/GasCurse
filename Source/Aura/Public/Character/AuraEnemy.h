@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Character/AuraCharacterBase.h"
+#include "Interaction/HighlightInterface.h"
 #include "Interaction/IEnemyInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "AuraEnemy.generated.h"
@@ -16,7 +17,7 @@ class AAuraAIController;
  * 
  */
 UCLASS()
-class AURA_API AAuraEnemy : public AAuraCharacterBase, public IIEnemyInterface
+class AURA_API AAuraEnemy : public AAuraCharacterBase, public IIEnemyInterface, public IHighlightInterface
 {
 	GENERATED_BODY()
 
