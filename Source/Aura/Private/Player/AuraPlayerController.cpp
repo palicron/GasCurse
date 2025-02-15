@@ -138,15 +138,8 @@ void AAuraPlayerController::CursorTrace()
 {
 	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGamePlayTags::Get().Player_Block_CursorTrace))
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighLightActor();
-		}
-		if (ThisActor)
-		{
-			ThisActor->UnHighLightActor();
-		}
-
+		UnHighlightActor(LastActor);
+		UnHighlightActor(ThisActor);
 		LastActor = nullptr;
 		ThisActor = nullptr;
 		return;
@@ -157,18 +150,33 @@ void AAuraPlayerController::CursorTrace()
 		return;
 
 	LastActor = ThisActor;
-	ThisActor = Cast<IHighlightInterface>(CursorHit.GetActor());
+	ThisActor = CursorHit.GetActor();
+	
+	if (!ThisActor || !ThisActor->Implements<UHighlightInterface>())
+	{
+		ThisActor = nullptr;
+	}
 
 	if (LastActor != ThisActor)
 	{
-		if (LastActor)
-		{
-			LastActor->UnHighLightActor();
-		}
-		if (ThisActor)
-		{
-			ThisActor->HighlightActor();
-		}
+		UnHighlightActor(LastActor);
+		HighlightActor(ThisActor);
+	}
+}
+
+void AAuraPlayerController::HighlightActor(AActor* InActor)
+{
+	if (InActor && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_HighlightActor(InActor);
+	}
+}
+
+void AAuraPlayerController::UnHighlightActor(AActor* InActor)
+{
+	if (InActor && InActor->Implements<UHighlightInterface>())
+	{
+		IHighlightInterface::Execute_UnHighLightActor(InActor);
 	}
 }
 
@@ -178,10 +186,17 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 	{
 		return;
 	}
-	if(InputTag.MatchesTagExact(FAuraGamePlayTags::Get().InputTag_LMB))
+	if (InputTag.MatchesTagExact(FAuraGamePlayTags::Get().InputTag_LMB) )
 	{
-		bTargeting = ThisActor ? true : false;
-		bAutoRunning = false;
+		if (ThisActor)
+		{
+			TargetingStatus = ThisActor->Implements<UIEnemyInterface>() ? TargetingEnemy : TargetingActor;
+			bAutoRunning = false;
+		}
+		else
+		{
+			TargetingStatus = TargetingNone;
+		}
 		
 	}
 	if(GetASC())
@@ -212,7 +227,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 		GetASC()->AbilityInputTagReleased(InputTag);
 	}
 	
-	if(!bTargeting && !bShiftKeyDown)
+	if(TargetingStatus != TargetingEnemy && !bShiftKeyDown)
 	{
 		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
@@ -244,7 +259,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			
 		}
 		FollowTime = 0.f;
-		bTargeting = false;
+		TargetingStatus = TargetingNone;
 	}
 	
 }
@@ -265,7 +280,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if(bTargeting || bShiftKeyDown)
+	if(TargetingStatus == TargetingEnemy || bShiftKeyDown)
 	{
 		if (GetASC())
 		{

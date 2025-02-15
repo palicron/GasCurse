@@ -103,7 +103,7 @@ AActor* AAuraEnemy::GetCombatTarget_Implementation() const
 	return CombatTarget;
 }
 
-void AAuraEnemy::HighlightActor()
+void AAuraEnemy::HighlightActor_Implementation()
 {
 	if (IsValid(GetMesh()) && IsValid(Weapon))
 	{
@@ -112,7 +112,7 @@ void AAuraEnemy::HighlightActor()
 	}
 }
 
-void AAuraEnemy::UnHighLightActor()
+void AAuraEnemy::UnHighLightActor_Implementation()
 {
 	if (IsValid(GetMesh()) && IsValid(Weapon))
 	{

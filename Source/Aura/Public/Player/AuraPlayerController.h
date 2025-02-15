@@ -15,6 +15,14 @@ class UAuraAbilitySystemComponent;
 struct FGameplayTag;
 class UAuraInputConfig;
 struct FInputActionValue;
+
+
+enum ETargetingStatus
+{
+	TargetingNone,
+	TargetingActor,
+	TargetingEnemy,
+};
 /**l
  * 
  */
@@ -82,9 +90,14 @@ private:
 
 	FHitResult CursorHit;
 
-	IHighlightInterface* LastActor;
-	IHighlightInterface* ThisActor;
+	UPROPERTY()
+	TObjectPtr<AActor> LastActor;
+	UPROPERTY()
+	TObjectPtr<AActor> ThisActor;
 
+	static void HighlightActor(AActor* InActor);
+
+	static void UnHighlightActor(AActor* InActor);
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -108,7 +121,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline;
 
-	bool bTargeting = false;
+	ETargetingStatus TargetingStatus = TargetingNone;
 
 	void AutoRun();
 
@@ -120,3 +133,5 @@ private:
 
 	void UpdateMagicCircleLocation();
 };
+
+

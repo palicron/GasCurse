@@ -34,9 +34,9 @@ public:
 	
 	virtual void BeginPlay() override;
 	
-	virtual void HighlightActor() override;
+	virtual void HighlightActor_Implementation() override;
 
-	virtual void UnHighLightActor() override;
+	virtual void UnHighLightActor_Implementation() override;
 
 	virtual void InitAbilityActorInfo() override;
 
