@@ -23,6 +23,13 @@ ACheckPoint::ACheckPoint(const FObjectInitializer& ObjectInitializer):Super(Obje
 	CheckPointSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	CheckPointSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
+	MoveToComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MoveToComponent"));
+	MoveToComponent->SetupAttachment(GetRootComponent());
+	
+	CheckPointMesh->SetCustomDepthStencilValue(CustomDepthStencilOverride);
+	CheckPointMesh->MarkRenderStateDirty();
+	CheckPointMesh->SetRenderCustomDepth(false);
+
 }
 
 void ACheckPoint::LoadActor_Implementation()
@@ -30,6 +37,27 @@ void ACheckPoint::LoadActor_Implementation()
 	if (bReached)
 	{
 		HandleGLowEffects();
+	}
+}
+
+void ACheckPoint::SetMoveToLocation_Implementation(FVector& OutDestination)
+{
+	OutDestination = MoveToComponent->GetComponentLocation();
+}
+
+void ACheckPoint::HighlightActor_Implementation()
+{
+	if (CheckPointMesh)
+	{
+		CheckPointMesh->SetRenderCustomDepth(true);
+	}
+}
+
+void ACheckPoint::UnHighLightActor_Implementation()
+{
+	if (CheckPointMesh)
+	{
+		CheckPointMesh->SetRenderCustomDepth(false);
 	}
 }
 

@@ -42,6 +42,8 @@ public:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+	virtual void SetMoveToLocation_Implementation(FVector& OutDestination) override;
+
 	UPROPERTY(BlueprintAssignable)	
 	FOnStatusChangedSignature OnHealthChanged;
 
@@ -77,3 +79,8 @@ protected:
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
 };
+
+inline void AAuraEnemy::SetMoveToLocation_Implementation(FVector& OutDestination)
+{
+	
+}
