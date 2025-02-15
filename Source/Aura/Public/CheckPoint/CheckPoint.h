@@ -22,9 +22,11 @@ public:
 	
 	ACheckPoint(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(BlueprintReadOnly, SaveGame)
+	UPROPERTY(BlueprintReadWrite, SaveGame)
 	bool bReached = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	bool bCallOverLapCallback = true;
 	//SAve interface
 
 	virtual bool ShouldLoadTransform_Implementation() override { return false; };
@@ -46,6 +48,7 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
 	void HandleGLowEffects();
 	
 	UFUNCTION(BlueprintImplementableEvent)
