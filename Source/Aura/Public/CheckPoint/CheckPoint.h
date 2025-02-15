@@ -37,7 +37,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void CheckPointReached(UMaterialInstanceDynamic* DynamicInstance);
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
 	TObjectPtr<UStaticMeshComponent> CheckPointMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
