@@ -56,9 +56,12 @@ public:
 
 	void SaveInGameProgressData(ULoadScreenSaveGame* SaveObject);
 
-	void SaveWorldState(UWorld* World) const;
+	void SaveWorldState(UWorld* World, const FString& DestinationMap = FString(""))   const;
 
 	void LoadWorldState(UWorld* World) const;
+
+	FString GetMapNameFromMapAssetName(const FString& AssetName) const;
 protected:
 	virtual void BeginPlay() override;
 };
+

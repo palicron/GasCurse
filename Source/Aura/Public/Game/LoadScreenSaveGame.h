@@ -109,6 +109,10 @@ public:
 	FString MapName = FString("Default Map");
 
 	UPROPERTY()
+	FString MapAssetName = FString("Default Asset Map");
+
+
+	UPROPERTY()
 	TEnumAsByte<ESaveLoadStatus> SaveSlotStatus = Vacant;
 
 	UPROPERTY()
