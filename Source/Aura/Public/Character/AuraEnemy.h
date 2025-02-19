@@ -61,6 +61,10 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category="Combat")
 	TObjectPtr<AActor> CombatTarget;
+
+	void SetLevel(int32 NewLevel) { Level = NewLevel; };
+
+	void SetCharacterClass(ECharacterClass NewClass) { CharacterClass = NewClass; };
 protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Character Class Defaults")
