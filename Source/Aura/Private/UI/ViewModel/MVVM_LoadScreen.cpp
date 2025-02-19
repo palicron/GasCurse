@@ -43,6 +43,8 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(const int32 Slot, const FString& Ent
 
 	if (!AuraGameModeBase || EnteredName.IsEmpty())
 	{
+		if (GEngine)
+		GEngine->AddOnScreenDebugMessage(1,15.f,FColor::Red,"PLease Switch to single player");
 		return;
 	}
 	LoadSlots[Slot]->SetMapName(AuraGameModeBase->StartingMapName);
