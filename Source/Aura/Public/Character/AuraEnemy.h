@@ -82,6 +82,9 @@ protected:
 	TObjectPtr<AAuraAIController> AuraAIController;
 
 	virtual void StunTagChanged(const FGameplayTag CallbackTag, const int32 NewCount) override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnLoot();
 };
 
 inline void AAuraEnemy::SetMoveToLocation_Implementation(FVector& OutDestination)

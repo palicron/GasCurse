@@ -569,3 +569,13 @@ void UAuraAbilitySystemLibrary::SetEffectParamASC(FDamageEffectParams& DamageEff
 {
 	DamageEffectParams.TargetAbilitySystemComponent = InASC;
 }
+
+ULootTiers* UAuraAbilitySystemLibrary::GetLootTiers(const UObject* WordContextObject)
+{
+	if (const AAuraGameModeBase* AuraGM = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WordContextObject)))
+	{
+		return AuraGM->LootTiers;
+	}
+
+	return nullptr;
+}

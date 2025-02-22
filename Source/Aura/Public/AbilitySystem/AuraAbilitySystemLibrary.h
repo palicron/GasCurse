@@ -10,6 +10,7 @@
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "AuraAbilitySystemLibrary.generated.h"
 
+class ULootTiers;
 class ULoadScreenSaveGame;
 class AAuraHUD;
 class USpellMenuWidgetController;
@@ -177,6 +178,10 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
 	static void SetEffectParamASC(UPARAM(ref) FDamageEffectParams& DamageEffectParams,UAbilitySystemComponent* InASC);
+
+
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	static ULootTiers* GetLootTiers(const UObject* WordContextObject);
 
 };
 

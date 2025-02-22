@@ -87,6 +87,7 @@ int32 AAuraEnemy::GetPlayerLevel_Implementation() const
 
 void AAuraEnemy::Die(const FVector& DeathImpulse)
 {
+	SpawnLoot();
 	SetLifeSpan(LifeSpan);
 	if(AuraAIController && AuraAIController->GetBlackboardComponent())
 	{
