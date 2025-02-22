@@ -61,6 +61,8 @@ public:
 	void LoadWorldState(UWorld* World) const;
 
 	FString GetMapNameFromMapAssetName(const FString& AssetName) const;
+
+	void PlayerDie(ACharacter* Player);
 protected:
 	virtual void BeginPlay() override;
 };

@@ -52,6 +52,9 @@ public:
 	
 	UPROPERTY()
 	TEnumAsByte<ESaveLoadStatus> LoadSlotStatus;
+
+	UPROPERTY()
+	FString MapAssetName;
 	
 protected:
 

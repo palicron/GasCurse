@@ -57,8 +57,17 @@ public:
 	virtual void HideMagicCircle_Implementation() override;
 
 	virtual void SaveProgress_Implementation(const FName& CheckPointTag) override;
+
+	virtual void Die(const FVector& DeathImpulse = FVector::ZeroVector) override;
+	
 	/*End Player Interface*/
 
+	UPROPERTY(EditDefaultsOnly)
+	float DeathTime = 5.f;
+
+	FTimerHandle DeathTimer;
+
+	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
 

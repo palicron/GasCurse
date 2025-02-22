@@ -92,7 +92,8 @@ protected:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void Tick(float DeltaSeconds) override;
-	
+
+	UPROPERTY(BlueprintReadOnly)
 	bool bDead = false;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly , Category= "Combat")
