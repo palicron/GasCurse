@@ -33,10 +33,44 @@ class AURA_API AAuraEffectActor : public AActor
 public:
 	AAuraEffectActor();
 
+	virtual void Tick(float DeltaSeconds) override;
 protected:
 	
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	bool bRotates = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	float RotationRate = 45.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	bool bSinusoidalMovement = false;
+
+	UFUNCTION(BlueprintCallable, Category="PickUP Movement")
+	void StartSinosoidalMovement();
+
+	UFUNCTION(BlueprintCallable, Category="PickUP Movement")
+	void StartRotationMovement();
+	
+	UPROPERTY(BlueprintReadOnly)
+	FVector CalculatedLocation;
+
+	UPROPERTY(BlueprintReadOnly)
+	FRotator CalculatedRotation;
+	
+	void ItemMovement(float DeltaSeconds);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	float SineAmplitude = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	FVector InitialLocation;
+
+	float RunningTime = 0.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="PickUP Movement")
+	float SinePeriodConst  = 1.f;
 	TMap<UAbilitySystemComponent*, FActiveGameplayEffectHandle> ActiveEffectHandles;
 
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category="Applied Effects")

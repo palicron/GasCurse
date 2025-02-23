@@ -6,20 +6,65 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Serialization/GameplayEffectContextNetSerializer.h"
 
 
 AAuraEffectActor::AAuraEffectActor()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRooy"));
 	
 }
 
+void AAuraEffectActor::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	RunningTime += DeltaSeconds;
+	if (RunningTime >= ((2 * PI)/SinePeriodConst))
+	{
+		RunningTime = 0.f;
+	}
+	ItemMovement(DeltaSeconds);
+}
+
 void AAuraEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = GetActorLocation();
+	CalculatedRotation = GetActorRotation();
+
+}
+
+void AAuraEffectActor::StartSinosoidalMovement()
+{
+	bSinusoidalMovement = true;
+	InitialLocation = GetActorLocation();
+	CalculatedLocation = GetActorLocation();
+}
+
+void AAuraEffectActor::StartRotationMovement()
+{
+	bRotates = true;
+	CalculatedRotation = GetActorRotation();
+}
+
+void AAuraEffectActor::ItemMovement(float DeltaSeconds)
+{
+	if (bRotates)
+	{
+		const FRotator DeltaRotator(0.f, DeltaSeconds * RotationRate, 0.f);
+		CalculatedRotation = UKismetMathLibrary::ComposeRotators(CalculatedRotation,DeltaRotator);
+	}
+	if (bSinusoidalMovement)
+	{
+		const float Sine = SineAmplitude * FMath::Sin(RunningTime * SinePeriodConst);
+		CalculatedLocation = InitialLocation + FVector(0.f,0.0f,Sine);
+	}
 }
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GamePlayEffectClass)
