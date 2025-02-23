@@ -180,7 +180,7 @@ public:
 	static void SetEffectParamASC(UPARAM(ref) FDamageEffectParams& DamageEffectParams,UAbilitySystemComponent* InASC);
 
 
-	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params")
+	UFUNCTION(BlueprintCallable,Category="AuraAbilitySytemLibrary|Damage effect params",meta=(DefaultToSelf = "WordContextObject"))
 	static ULootTiers* GetLootTiers(const UObject* WordContextObject);
 
 };
